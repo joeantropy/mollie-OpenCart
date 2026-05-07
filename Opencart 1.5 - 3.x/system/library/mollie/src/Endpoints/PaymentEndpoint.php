@@ -164,4 +164,18 @@ class PaymentEndpoint extends \Mollie\Api\Endpoints\CollectionEndpointAbstract
         $result = $this->client->performHttpCall(self::REST_CREATE, $resource, $body);
         return \Mollie\Api\Resources\ResourceFactory::createFromApiResult($result, new \Mollie\Api\Resources\Refund($this->client));
     }
+    /**
+     * Release the authorization for the given payment.
+     *
+     * @param Payment|string $paymentId
+     *
+     * @return \stdClass
+     * @throws ApiException
+     */
+    public function releaseAuthorization($paymentId)
+    {
+        $paymentId = $paymentId instanceof \Mollie\Api\Resources\Payment ? $paymentId->id : $paymentId;
+        $resource = "{$this->getResourcePath()}/" . \urlencode($paymentId) . "/release-authorization";
+        return $this->client->performHttpCall(self::REST_CREATE, $resource);
+    }
 }

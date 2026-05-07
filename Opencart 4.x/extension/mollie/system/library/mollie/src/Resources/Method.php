@@ -2,6 +2,9 @@
 
 namespace Mollie\Api\Resources;
 
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class Method extends \Mollie\Api\Resources\BaseResource
 {
     /**
@@ -63,20 +66,30 @@ class Method extends \Mollie\Api\Resources\BaseResource
     public $_links;
     /**
      * Get the issuer value objects
-     *
-     * @return IssuerCollection
      */
-    public function issuers()
+    public function issuers() : \Mollie\Api\Resources\IssuerCollection
     {
-        return \Mollie\Api\Resources\ResourceFactory::createBaseResourceCollection($this->client, \Mollie\Api\Resources\Issuer::class, $this->issuers);
+        /** @var IssuerCollection */
+        $collection = \Mollie\Api\Resources\ResourceFactory::createCollection($this->connector, \Mollie\Api\Resources\IssuerCollection::class);
+        if ($this->issuers === null) {
+            return $collection;
+        }
+        /** @var IssuerCollection */
+        $collection = (new \Mollie\Api\Resources\ResourceHydrator())->hydrateCollection($collection, (array) $this->issuers, $this->response);
+        return $collection;
     }
     /**
      * Get the method price value objects.
-     *
-     * @return MethodPriceCollection
      */
-    public function pricing()
+    public function pricing() : \Mollie\Api\Resources\MethodPriceCollection
     {
-        return \Mollie\Api\Resources\ResourceFactory::createBaseResourceCollection($this->client, \Mollie\Api\Resources\MethodPrice::class, $this->pricing);
+        /** @var MethodPriceCollection */
+        $collection = \Mollie\Api\Resources\ResourceFactory::createCollection($this->connector, \Mollie\Api\Resources\MethodPriceCollection::class);
+        if ($this->pricing === null) {
+            return $collection;
+        }
+        /** @var MethodPriceCollection */
+        $collection = (new \Mollie\Api\Resources\ResourceHydrator())->hydrateCollection($collection, (array) $this->pricing, $this->response);
+        return $collection;
     }
 }

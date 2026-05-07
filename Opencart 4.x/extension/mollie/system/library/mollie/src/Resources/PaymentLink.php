@@ -2,8 +2,13 @@
 
 namespace Mollie\Api\Resources;
 
+use Mollie\Api\Traits\HasMode;
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class PaymentLink extends \Mollie\Api\Resources\BaseResource
 {
+    use HasMode;
     /**
      * Id of the payment link (on the Mollie platform).
      *
@@ -21,6 +26,7 @@ class PaymentLink extends \Mollie\Api\Resources\BaseResource
      * The profile ID this payment link belongs to.
      *
      * @example pfl_QkEhN94Ba
+     *
      * @var string
      */
     public $profileId;
@@ -28,6 +34,7 @@ class PaymentLink extends \Mollie\Api\Resources\BaseResource
      * UTC datetime the payment link was created in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $createdAt;
@@ -35,6 +42,7 @@ class PaymentLink extends \Mollie\Api\Resources\BaseResource
      * UTC datetime the payment was paid in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $paidAt;
@@ -49,6 +57,7 @@ class PaymentLink extends \Mollie\Api\Resources\BaseResource
      * UTC datetime the payment link was updated in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $updatedAt;
@@ -56,6 +65,7 @@ class PaymentLink extends \Mollie\Api\Resources\BaseResource
      * UTC datetime - the expiry date of the payment link in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $expiresAt;
@@ -65,6 +75,30 @@ class PaymentLink extends \Mollie\Api\Resources\BaseResource
      * @var \stdClass
      */
     public $amount;
+    /**
+     * The minimum amount. Only used for payment links without a fixed amount.
+     *
+     * @var \stdClass|null
+     */
+    public $minimumAmount;
+    /**
+     * The order lines for this payment link (used for Klarna and other BNPL methods).
+     *
+     * @var array|null
+     */
+    public $lines;
+    /**
+     * The billing address for this payment link.
+     *
+     * @var \stdClass|null
+     */
+    public $billingAddress;
+    /**
+     * The shipping address for this payment link.
+     *
+     * @var \stdClass|null
+     */
+    public $shippingAddress;
     /**
      * Description of the payment link that is shown to the customer during the payment,
      * and possibly on the bank or credit card statement.
@@ -90,19 +124,15 @@ class PaymentLink extends \Mollie\Api\Resources\BaseResource
     public $_links;
     /**
      * Is this payment paid for?
-     *
-     * @return bool
      */
-    public function isPaid()
+    public function isPaid() : bool
     {
         return !empty($this->paidAt);
     }
     /**
      * Get the checkout URL where the customer can complete the payment.
-     *
-     * @return string|null
      */
-    public function getCheckoutUrl()
+    public function getCheckoutUrl() : ?string
     {
         if (empty($this->_links->paymentLink)) {
             return null;
@@ -112,59 +142,30 @@ class PaymentLink extends \Mollie\Api\Resources\BaseResource
     /**
      * Persist the current local Payment Link state to the Mollie API.
      *
-     * @return mixed|\Mollie\Api\Resources\BaseResource
      * @throws \Mollie\Api\Exceptions\ApiException
      */
-    public function update()
+    public function update() : ?\Mollie\Api\Resources\PaymentLink
     {
-        $body = $this->withPresetOptions(['description' => $this->description, 'archived' => $this->archived]);
-        $result = $this->client->paymentLinks->update($this->id, $body);
-        return \Mollie\Api\Resources\ResourceFactory::createFromApiResult($result, new \Mollie\Api\Resources\PaymentLink($this->client));
+        return $this->connector->paymentLinks->update($this->id, $this->withMode(['description' => $this->description, 'archived' => $this->archived]));
     }
     /**
      * Archive this Payment Link.
      *
      * @return \Mollie\Api\Resources\PaymentLink
+     *
      * @throws \Mollie\Api\Exceptions\ApiException
      */
     public function archive()
     {
-        $data = $this->withPresetOptions(['archived' => \true]);
-        return $this->client->paymentLinks->update($this->id, $data);
+        return $this->connector->paymentLinks->update($this->id, $this->withMode(['archived' => \true]));
     }
     /**
      * Retrieve a paginated list of payments associated with this payment link.
      *
-     * @param string|null $from
-     * @param int|null $limit
-     * @param array $filters
      * @return mixed|\Mollie\Api\Resources\BaseCollection
      */
-    public function payments(string $from = null, int $limit = null, array $filters = [])
+    public function payments(?string $from = null, ?int $limit = null, array $filters = [])
     {
-        return $this->client->paymentLinkPayments->pageFor($this, $from, $limit, $this->withPresetOptions($filters));
-    }
-    /**
-     * When accessed by oAuth we want to pass the testmode by default
-     *
-     * @return array
-     */
-    private function getPresetOptions()
-    {
-        $options = [];
-        if ($this->client->usesOAuth()) {
-            $options["testmode"] = $this->mode === "test";
-        }
-        return $options;
-    }
-    /**
-     * Apply the preset options.
-     *
-     * @param array $options
-     * @return array
-     */
-    private function withPresetOptions(array $options)
-    {
-        return \array_merge($this->getPresetOptions(), $options);
+        return $this->connector->paymentLinkPayments->pageFor($this, $from, $limit, $this->withMode($filters));
     }
 }

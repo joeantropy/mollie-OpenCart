@@ -106,7 +106,7 @@ class ModelPaymentMollieBase extends Model
 	
 			$this->session->data['mollie_allowed_methods'] = $allowed_methods;
 			$this->session->data['mollie_currency'] = $this->session->data["currency"];
-			$this->session->data['mollie_country_id'] = $this->session->data['payment_address']['country_id'];
+			$this->session->data['mollie_country_id'] = isset($this->session->data['payment_address']) && isset($this->session->data['payment_address']['country_id']) ? $this->session->data['payment_address']['country_id'] : $this->config->get('config_country_id');
 		}
 
 		return $allowed_methods;			
@@ -243,7 +243,6 @@ class ModelPaymentMollieBase extends Model
 			
 		$data = array(
             "amount" 		 => ["value" => (string)$this->numberFormat($total), "currency" => $currency],
-            "resource" 		 => "orders",
             "includeWallets" => "applepay",
 			"billingCountry" => $country,
 			"sequenceType" 	 => $sequence
@@ -308,29 +307,10 @@ class ModelPaymentMollieBase extends Model
 	/**
 	 * While createPayment is in progress this method is getting called to store the order information.
 	 *
-	 * @param $order_id
 	 * @param $transaction_id
 	 *
 	 * @return bool
 	 */
-	public function setPayment($order_id, $mollie_order_id, $method)
-	{
-		$payment_attempt = 1;
-		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mollie_payments` WHERE `order_id` = '" . $order_id . "' ORDER BY payment_attempt DESC LIMIT 1");		
-		if($query->num_rows > 0) {
-			$payment_attempt += $query->row['payment_attempt'];
-		}
-		$bank_account = isset($this->session->data['mollie_issuer']) ? $this->session->data['mollie_issuer'] : NULL;
-		if (!empty($order_id) && !empty($mollie_order_id) && !empty($method)) {
-			$this->db->query("INSERT INTO `" . DB_PREFIX . "mollie_payments` SET `order_id` = '" . (int)$order_id . "', `mollie_order_id` = '" . $this->db->escape($mollie_order_id) . "', `method` = '" . $this->db->escape($method) . "', `bank_account` = '" . $this->db->escape($bank_account) . "', `payment_attempt` = '" . (int)$payment_attempt . "', date_modified = NOW() ON DUPLICATE KEY UPDATE `order_id` = '" . (int)$order_id . "'");
-
-			if ($this->db->countAffected() > 0) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
 
 	public function setPaymentForPaymentAPI($order_id, $mollie_payment_id, $method)
 	{
@@ -360,15 +340,6 @@ class ModelPaymentMollieBase extends Model
 	 *
 	 * @return bool
 	 */
-	public function updatePayment($order_id, $mollie_order_id, $data, $consumer = NULL)
-	{
-		if (!empty($order_id) && !empty($mollie_order_id)) {
-			$this->db->query("UPDATE `" . DB_PREFIX . "mollie_payments` SET `transaction_id` = '" . $this->db->escape($data['payment_id']) . "', `bank_status` = '" . $this->db->escape($data['status']) . "', amount = '" . (isset($data['amount']) ? (float)$data['amount'] : 0) . "', date_modified = NOW() WHERE `order_id` = '" . (int)$order_id . "' AND `mollie_order_id` = '" . $this->db->escape($mollie_order_id) . "'");
-
-			return $this->db->countAffected() > 0;
-		}
-		return FALSE;
-	}
 
 	public function updatePaymentForPaymentAPI($order_id, $mollie_payment_id, $data, $consumer = NULL)
 	{
@@ -386,16 +357,6 @@ class ModelPaymentMollieBase extends Model
 			$results = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mollie_payments` WHERE `order_id` = '" . $order_id . "'");
 			if($results->num_rows == 0) return FALSE;
 			return $results->row['transaction_id'];
-		}
-		return FALSE;
-	}
-
-	public function getOrderID($order_id)
-	{
-		if (!empty($order_id)) {
-			$results = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mollie_payments` WHERE `order_id` = '" . $order_id . "' ORDER BY payment_attempt DESC LIMIT 1");
-			if($results->num_rows == 0) return FALSE;
-			return $results->row['mollie_order_id'];
 		}
 		return FALSE;
 	}
@@ -437,38 +398,21 @@ class ModelPaymentMollieBase extends Model
 		return FALSE;
 	}
 
-	public function getPaymentById($id, $type)
+	public function getPaymentById($id)
 	{
-		if ($type == 'payment') {
-			$results = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mollie_payments` WHERE `transaction_id` = '" . $this->db->escape($id) . "'");
-		} else {
-			$results = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mollie_payments` WHERE `mollie_order_id` = '" . $this->db->escape($id) . "'");
-		}
+		$results = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mollie_payments` WHERE `transaction_id` = '" . $this->db->escape($id) . "'");
 		
 		return $results->row;
 	}
 
-	public function cancelReturn($order_id, $mollie_order_id, $data) {
+	public function cancelReturn($order_id, $data) {
 		if (!empty($order_id)) {
-			if (!empty($mollie_order_id)) {
-				$this->db->query("UPDATE `" . DB_PREFIX . "mollie_payments` SET `transaction_id` = '" . $this->db->escape($data['payment_id']) . "', `bank_status` = '" . $this->db->escape($data['status']) . "', `refund_id` = '" . $this->db->escape($data['refund_id']) . "' WHERE `order_id` = '" . (int)$order_id . "' AND `mollie_order_id` = '" . $this->db->escape($mollie_order_id) . "'");
-			} else {
-				$this->db->query("UPDATE `" . DB_PREFIX . "mollie_payments` SET `bank_status` = '" . $this->db->escape($data['status']) . "', `refund_id` = '" . $this->db->escape($data['refund_id']) . "' WHERE `order_id` = '" . (int)$order_id . "' AND `transaction_id` = '" . $this->db->escape($data['payment_id']) . "'");
-			}
+			$this->db->query("UPDATE `" . DB_PREFIX . "mollie_payments` SET `bank_status` = '" . $this->db->escape($data['status']) . "', `refund_id` = '" . $this->db->escape($data['refund_id']) . "' WHERE `order_id` = '" . (int)$order_id . "' AND `transaction_id` = '" . $this->db->escape($data['payment_id']) . "'");
 
 			return $this->db->countAffected() > 0;
 		}
-	}
 
-	public function checkMollieOrderID($mollie_order_id)
-	{
-		if (!empty($mollie_order_id)) {
-			$results = $this->db->query("SELECT * FROM `" . DB_PREFIX . "mollie_payments` WHERE `mollie_order_id` = '" . $mollie_order_id . "'");
-			if($results->num_rows == 0) return FALSE;
-			return TRUE;
-		}
-
-		return FALSE;
+        return false;
 	}
 
 	public function getOrderStatuses($order_id) {
@@ -507,7 +451,7 @@ class ModelPaymentMollieBase extends Model
 		$this->db->query("DELETE FROM `" . DB_PREFIX . "mollie_customers` WHERE email = '" . $this->db->escape(utf8_strtolower($email)) . "'");
 	}
 
-	public function recurringPayment($item, $subscription_id, $mollie_order_id = '', $mollie_payment_id = '') {
+	public function recurringPayment($item, $subscription_id, $mollie_payment_id = '') {
 
 		$this->load->model('checkout/recurring');
 		$this->load->language("payment/mollie");
@@ -561,11 +505,7 @@ class ModelPaymentMollieBase extends Model
 
 		$this->addProfileTransaction($order_recurring_id, $order_id_rand, $price, 1);
 
-		if (!empty($mollie_order_id)) {
-			$this->db->query("UPDATE `" . DB_PREFIX . "mollie_payments` SET `subscription_id` = '" . $this->db->escape($subscription_id) . "', `next_payment` = '" . $this->db->escape(date_format($next_payment, 'Y-m-d H:i:s')) . "', subscription_end = '" . $this->db->escape(date_format($subscription_end, 'Y-m-d H:i:s')) . "', order_recurring_id = '" . $this->db->escape($order_recurring_id) . "' WHERE `order_id` = '" . (int)$this->session->data['order_id'] . "' AND `mollie_order_id` = '" . $this->db->escape($mollie_order_id) . "'");
-		} else {
-			$this->db->query("UPDATE `" . DB_PREFIX . "mollie_payments` SET `subscription_id` = '" . $this->db->escape($subscription_id) . "', `next_payment` = '" . $this->db->escape(date_format($next_payment, 'Y-m-d H:i:s')) . "', subscription_end = '" . $this->db->escape(date_format($subscription_end, 'Y-m-d H:i:s')) . "', order_recurring_id = '" . $this->db->escape($order_recurring_id) . "' WHERE `order_id` = '" . (int)$this->session->data['order_id'] . "' AND `mollie_payment_id` = '" . $this->db->escape($mollie_payment_id) . "'");
-		}
+		$this->db->query("UPDATE `" . DB_PREFIX . "mollie_payments` SET `subscription_id` = '" . $this->db->escape($subscription_id) . "', `next_payment` = '" . $this->db->escape(date_format($next_payment, 'Y-m-d H:i:s')) . "', subscription_end = '" . $this->db->escape(date_format($subscription_end, 'Y-m-d H:i:s')) . "', order_recurring_id = '" . $this->db->escape($order_recurring_id) . "' WHERE `order_id` = '" . (int)$this->session->data['order_id'] . "' AND `transaction_id` = '" . $this->db->escape($mollie_payment_id) . "'");
 	}
 
 	private function calculateSchedule($frequency, $next_payment, $cycle) {

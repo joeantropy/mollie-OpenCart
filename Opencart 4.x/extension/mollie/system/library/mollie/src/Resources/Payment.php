@@ -2,13 +2,20 @@
 
 namespace Mollie\Api\Resources;
 
+use Mollie\Api\Contracts\EmbeddedResourcesContract;
 use Mollie\Api\Exceptions\ApiException;
-use Mollie\Api\MollieApiClient;
+use Mollie\Api\Http\Requests\DynamicGetRequest;
+use Mollie\Api\Http\Requests\UpdatePaymentRequest;
+use Mollie\Api\Traits\HasMode;
+use Mollie\Api\Types\PaymentMethod;
 use Mollie\Api\Types\PaymentStatus;
 use Mollie\Api\Types\SequenceType;
-class Payment extends \Mollie\Api\Resources\BaseResource
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
+class Payment extends \Mollie\Api\Resources\BaseResource implements EmbeddedResourcesContract
 {
-    use HasPresetOptions;
+    use HasMode;
     /**
      * Id of the payment (on the Mollie platform).
      *
@@ -71,6 +78,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * method.
      *
      * @see Method
+     *
      * @var string|null
      */
     public $method;
@@ -79,11 +87,18 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      *
      * @var string
      */
-    public $status = \Mollie\Api\Types\PaymentStatus::STATUS_OPEN;
+    public $status = PaymentStatus::OPEN;
+    /**
+     * The reason for the status of the payment.
+     *
+     * @var object|null
+     */
+    public $statusReason;
     /**
      * UTC datetime the payment was created in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $createdAt;
@@ -91,6 +106,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * UTC datetime the payment was paid in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $paidAt;
@@ -98,6 +114,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * UTC datetime the payment was canceled in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $canceledAt;
@@ -119,6 +136,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * UTC due date for the banktransfer payment in ISO-8601 format.
      *
      * @example "2021-01-19"
+     *
      * @var string|null
      */
     public $dueDate;
@@ -127,7 +145,9 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * Please note: the payment instructions will be sent immediately when creating the payment.
      *
      * @example "user@mollie.com"
+     *
      * @var string|null
+     *
      * @deprecated 2024-06-01 The billingEmail field is deprecated. Use the "billingAddress" field instead.
      */
     public $billingEmail;
@@ -135,6 +155,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * The profile ID this payment belongs to.
      *
      * @example pfl_xH2kP6Nc6X
+     *
      * @var string
      */
     public $profileId;
@@ -166,6 +187,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * The mandate ID this payment is performed with.
      *
      * @example mdt_pXm1g3ND
+     *
      * @var string|null
      */
     public $mandateId;
@@ -173,6 +195,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * The subscription ID this payment belongs to.
      *
      * @example sub_rVKGtNd6s3
+     *
      * @var string|null
      */
     public $subscriptionId;
@@ -180,6 +203,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * The order ID this payment belongs to.
      *
      * @example ord_pbjz8x
+     *
      * @var string|null
      */
     public $orderId;
@@ -205,6 +229,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * The settlement ID this payment belongs to.
      *
      * @example stl_jDk30akdN
+     *
      * @var string|null
      */
     public $settlementId;
@@ -218,7 +243,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * During creation of the payment you can set custom metadata that is stored with
      * the payment, and given back whenever you retrieve that payment.
      *
-     * @var \stdClass|mixed|null
+     * @var \stdClass|array|null
      */
     public $metadata;
     /**
@@ -231,7 +256,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
     /**
      * Used to restrict the payment methods available to your customer to those from a single country.
      *
-     * @var string|null;
+     * @var string|null
      */
     public $restrictPaymentMethodsToCountry;
     /**
@@ -239,7 +264,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      */
     public $_links;
     /**
-     * @var \stdClass[]
+     * @var \stdClass
      */
     public $_embedded;
     /**
@@ -270,7 +295,9 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * will be added to the date and time the payment became authorized.
      *
      * Possible values: ... hours ... days
+     *
      * @example 8 hours
+     *
      * @var string|null
      */
     public $captureDelay;
@@ -279,6 +306,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * ISO-8601 format. This parameter is omitted if the payment is not authorized (yet).
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $captureBefore;
@@ -303,6 +331,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * parameter is omitted if the payment is not authorized (yet).
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $authorizedAt;
@@ -311,6 +340,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * parameter is omitted if the payment did not expire (yet).
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $expiredAt;
@@ -319,6 +349,7 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * be available here as well.
      *
      * @example cst_XPn78q9CfT
+     *
      * @var string|null
      */
     public $customerId;
@@ -330,115 +361,95 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * @var string|null
      */
     public $countryCode;
+    public function getEmbeddedResourcesMap() : array
+    {
+        return ['captures' => \Mollie\Api\Resources\CaptureCollection::class, 'refunds' => \Mollie\Api\Resources\RefundCollection::class, 'chargebacks' => \Mollie\Api\Resources\ChargebackCollection::class];
+    }
     /**
      * Is this payment canceled?
-     *
-     * @return bool
      */
-    public function isCanceled()
+    public function isCanceled() : bool
     {
-        return $this->status === \Mollie\Api\Types\PaymentStatus::STATUS_CANCELED;
+        return $this->status === PaymentStatus::CANCELED;
     }
     /**
      * Is this payment expired?
-     *
-     * @return bool
      */
-    public function isExpired()
+    public function isExpired() : bool
     {
-        return $this->status === \Mollie\Api\Types\PaymentStatus::STATUS_EXPIRED;
+        return $this->status === PaymentStatus::EXPIRED;
     }
     /**
      * Is this payment still open / ongoing?
-     *
-     * @return bool
      */
-    public function isOpen()
+    public function isOpen() : bool
     {
-        return $this->status === \Mollie\Api\Types\PaymentStatus::STATUS_OPEN;
+        return $this->status === PaymentStatus::OPEN;
     }
     /**
      * Is this payment pending?
-     *
-     * @return bool
      */
-    public function isPending()
+    public function isPending() : bool
     {
-        return $this->status === \Mollie\Api\Types\PaymentStatus::STATUS_PENDING;
+        return $this->status === PaymentStatus::PENDING;
     }
     /**
      * Is this payment authorized?
-     *
-     * @return bool
      */
-    public function isAuthorized()
+    public function isAuthorized() : bool
     {
-        return $this->status === \Mollie\Api\Types\PaymentStatus::STATUS_AUTHORIZED;
+        return $this->status === PaymentStatus::AUTHORIZED;
     }
     /**
      * Is this payment paid for?
-     *
-     * @return bool
      */
-    public function isPaid()
+    public function isPaid() : bool
     {
         return !empty($this->paidAt);
     }
     /**
      * Does the payment have refunds
-     *
-     * @return bool
      */
-    public function hasRefunds()
+    public function hasRefunds() : bool
     {
         return !empty($this->_links->refunds);
     }
     /**
      * Does this payment has chargebacks
-     *
-     * @return bool
      */
-    public function hasChargebacks()
+    public function hasChargebacks() : bool
     {
         return !empty($this->_links->chargebacks);
     }
     /**
      * Is this payment failing?
-     *
-     * @return bool
      */
-    public function isFailed()
+    public function isFailed() : bool
     {
-        return $this->status === \Mollie\Api\Types\PaymentStatus::STATUS_FAILED;
+        return $this->status === PaymentStatus::FAILED;
     }
     /**
      * Check whether 'sequenceType' is set to 'first'. If a 'first' payment has been
      * completed successfully, the consumer's account may be charged automatically
      * using recurring payments.
-     *
-     * @return bool
      */
-    public function hasSequenceTypeFirst()
+    public function hasSequenceTypeFirst() : bool
     {
-        return $this->sequenceType === \Mollie\Api\Types\SequenceType::SEQUENCETYPE_FIRST;
+        return $this->sequenceType === SequenceType::FIRST;
     }
     /**
      * Check whether 'sequenceType' is set to 'recurring'. This type of payment is
      * processed without involving
      * the consumer.
-     *
-     * @return bool
      */
-    public function hasSequenceTypeRecurring()
+    public function hasSequenceTypeRecurring() : bool
     {
-        return $this->sequenceType === \Mollie\Api\Types\SequenceType::SEQUENCETYPE_RECURRING;
+        return $this->sequenceType === SequenceType::RECURRING;
     }
     /**
      * Get the checkout URL where the customer can complete the payment.
-     *
-     * @return string|null
      */
-    public function getCheckoutUrl()
+    public function getCheckoutUrl() : ?string
     {
         if (empty($this->_links->checkout)) {
             return null;
@@ -447,36 +458,26 @@ class Payment extends \Mollie\Api\Resources\BaseResource
     }
     /**
      * Get the mobile checkout URL where the customer can complete the payment.
-     *
-     * @return string|null
      */
-    public function getMobileAppCheckoutUrl()
+    public function getMobileAppCheckoutUrl() : ?string
     {
         if (empty($this->_links->mobileAppCheckout)) {
             return null;
         }
         return $this->_links->mobileAppCheckout->href;
     }
-    /**
-     * @return bool
-     */
-    public function canBeRefunded()
+    public function canBeRefunded() : bool
     {
         return $this->amountRemaining !== null;
     }
-    /**
-     * @return bool
-     */
-    public function canBePartiallyRefunded()
+    public function canBePartiallyRefunded() : bool
     {
         return $this->canBeRefunded();
     }
     /**
      * Get the amount that is already refunded
-     *
-     * @return float
      */
-    public function getAmountRefunded()
+    public function getAmountRefunded() : float
     {
         if ($this->amountRefunded) {
             return (float) $this->amountRefunded->value;
@@ -487,10 +488,8 @@ class Payment extends \Mollie\Api\Resources\BaseResource
      * Get the remaining amount that can be refunded. For some payment methods this
      * amount can be higher than the payment amount. This is possible to reimburse
      * the costs for a return shipment to your customer for example.
-     *
-     * @return float
      */
-    public function getAmountRemaining()
+    public function getAmountRemaining() : float
     {
         if ($this->amountRemaining) {
             return (float) $this->amountRemaining->value;
@@ -500,10 +499,8 @@ class Payment extends \Mollie\Api\Resources\BaseResource
     /**
      * Get the total amount that was charged back for this payment. Only available when the
      * total charged back amount is not zero.
-     *
-     * @return float
      */
-    public function getAmountChargedBack()
+    public function getAmountChargedBack() : float
     {
         if ($this->amountChargedBack) {
             return (float) $this->amountChargedBack->value;
@@ -512,129 +509,112 @@ class Payment extends \Mollie\Api\Resources\BaseResource
     }
     /**
      * Does the payment have split payments
-     *
-     * @return bool
      */
-    public function hasSplitPayments()
+    public function hasSplitPayments() : bool
     {
         return !empty($this->routing);
     }
     /**
      * Retrieves all refunds associated with this payment
      *
-     * @return RefundCollection
      * @throws ApiException
      */
-    public function refunds()
+    public function refunds() : \Mollie\Api\Resources\RefundCollection
     {
         if (!isset($this->_links->refunds->href)) {
-            return new \Mollie\Api\Resources\RefundCollection($this->client, 0, null);
+            return \Mollie\Api\Resources\RefundCollection::withResponse($this->response, $this->connector);
         }
-        $result = $this->client->performHttpCallToFullUrl(\Mollie\Api\MollieApiClient::HTTP_GET, $this->_links->refunds->href);
-        return \Mollie\Api\Resources\ResourceFactory::createCursorResourceCollection($this->client, $result->_embedded->refunds, \Mollie\Api\Resources\Refund::class, $result->_links);
+        return $this->connector->send((new DynamicGetRequest($this->_links->refunds->href))->setHydratableResource(\Mollie\Api\Resources\RefundCollection::class));
     }
     /**
-     * @param string $refundId
-     * @param array $parameters
+     * @param  string  $refundId
      *
-     * @return Refund
      * @throws ApiException
      */
-    public function getRefund($refundId, array $parameters = [])
+    public function getRefund($refundId, array $parameters = []) : \Mollie\Api\Resources\Refund
     {
-        return $this->client->paymentRefunds->getFor($this, $refundId, $this->withPresetOptions($parameters));
+        return $this->connector->paymentRefunds->getFor($this, $refundId, $parameters, $this->isInTestmode());
     }
     /**
-     * @param array $parameters
-     *
-     * @return Refund
      * @throws ApiException
      */
-    public function listRefunds(array $parameters = [])
+    public function listRefunds(array $parameters = []) : \Mollie\Api\Resources\RefundCollection
     {
-        return $this->client->paymentRefunds->listFor($this, $this->withPresetOptions($parameters));
+        return $this->connector->paymentRefunds->pageFor($this, null, null, $this->withMode($parameters));
     }
     /**
      * Retrieves all captures associated with this payment
      *
-     * @return CaptureCollection
      * @throws ApiException
      */
-    public function captures()
+    public function captures() : \Mollie\Api\Resources\CaptureCollection
     {
         if (!isset($this->_links->captures->href)) {
-            return new \Mollie\Api\Resources\CaptureCollection($this->client, 0, null);
+            return \Mollie\Api\Resources\CaptureCollection::withResponse($this->response, $this->connector);
         }
-        $result = $this->client->performHttpCallToFullUrl(\Mollie\Api\MollieApiClient::HTTP_GET, $this->_links->captures->href);
-        return \Mollie\Api\Resources\ResourceFactory::createCursorResourceCollection($this->client, $result->_embedded->captures, \Mollie\Api\Resources\Capture::class, $result->_links);
+        return $this->connector->send((new DynamicGetRequest($this->_links->captures->href))->setHydratableResource(\Mollie\Api\Resources\CaptureCollection::class));
     }
     /**
-     * @param string $captureId
-     * @param array $parameters
+     * @param  string  $captureId
      *
-     * @return Capture
      * @throws ApiException
      */
-    public function getCapture($captureId, array $parameters = [])
+    public function getCapture($captureId, array $parameters = []) : \Mollie\Api\Resources\Capture
     {
-        return $this->client->paymentCaptures->getFor($this, $captureId, $this->withPresetOptions($parameters));
+        return $this->connector->paymentCaptures->getFor($this, $captureId, $parameters, $this->isInTestmode());
     }
     /**
      * Retrieves all chargebacks associated with this payment
      *
-     * @return ChargebackCollection
      * @throws ApiException
      */
-    public function chargebacks()
+    public function chargebacks() : \Mollie\Api\Resources\ChargebackCollection
     {
         if (!isset($this->_links->chargebacks->href)) {
-            return new \Mollie\Api\Resources\ChargebackCollection($this->client, 0, null);
+            return \Mollie\Api\Resources\ChargebackCollection::withResponse($this->response, $this->connector);
         }
-        $result = $this->client->performHttpCallToFullUrl(\Mollie\Api\MollieApiClient::HTTP_GET, $this->_links->chargebacks->href);
-        return \Mollie\Api\Resources\ResourceFactory::createCursorResourceCollection($this->client, $result->_embedded->chargebacks, \Mollie\Api\Resources\Chargeback::class, $result->_links);
+        return $this->connector->send((new DynamicGetRequest($this->_links->chargebacks->href))->setHydratableResource(\Mollie\Api\Resources\ChargebackCollection::class));
     }
     /**
      * Retrieves a specific chargeback for this payment.
      *
-     * @param string $chargebackId
-     * @param array $parameters
+     * @param  string  $chargebackId
      *
-     * @return Chargeback
      * @throws ApiException
      */
-    public function getChargeback($chargebackId, array $parameters = [])
+    public function getChargeback($chargebackId, array $parameters = []) : \Mollie\Api\Resources\Chargeback
     {
-        return $this->client->paymentChargebacks->getFor($this, $chargebackId, $this->withPresetOptions($parameters));
+        return $this->connector->paymentChargebacks->getFor($this, $chargebackId, $parameters, $this->isInTestmode());
     }
     /**
      * Issue a refund for this payment.
      *
-     * @param array $data
+     * @param  array  $data
      *
-     * @return \Mollie\Api\Resources\Refund
      * @throws ApiException
      */
-    public function refund($data)
+    public function refund($data) : \Mollie\Api\Resources\Refund
     {
-        return $this->client->paymentRefunds->createFor($this, $data);
+        return $this->connector->paymentRefunds->createFor($this, $data);
     }
     /**
-     * @return \Mollie\Api\Resources\Payment
      * @throws \Mollie\Api\Exceptions\ApiException
      */
-    public function update()
+    public function update() : \Mollie\Api\Resources\Payment
     {
-        $body = ["description" => $this->description, "cancelUrl" => $this->cancelUrl, "redirectUrl" => $this->redirectUrl, "webhookUrl" => $this->webhookUrl, "metadata" => $this->metadata, "restrictPaymentMethodsToCountry" => $this->restrictPaymentMethodsToCountry, "locale" => $this->locale, "dueDate" => $this->dueDate];
-        $result = $this->client->payments->update($this->id, $this->withPresetOptions($body));
-        return \Mollie\Api\Resources\ResourceFactory::createFromApiResult($result, new \Mollie\Api\Resources\Payment($this->client));
+        $additional = [];
+        if ($this->method === PaymentMethod::BANKTRANSFER) {
+            $additional['dueDate'] = $this->dueDate;
+        }
+        $updateRequest = (new UpdatePaymentRequest($this->id, $this->description, $this->redirectUrl, $this->cancelUrl, $this->webhookUrl, (array) $this->metadata, $this->method, $this->locale, $this->restrictPaymentMethodsToCountry, $additional))->test($this->isInTestmode());
+        /** @var null|Payment */
+        return $this->connector->send($updateRequest);
     }
     /**
      * The total amount that is already captured for this payment. Only available
      * when this payment supports captures.
-     *
-     * @return float
      */
-    public function getAmountCaptured()
+    public function getAmountCaptured() : float
     {
         if ($this->amountCaptured) {
             return (float) $this->amountCaptured->value;
@@ -643,10 +623,8 @@ class Payment extends \Mollie\Api\Resources\BaseResource
     }
     /**
      * The amount that has been settled.
-     *
-     * @return float
      */
-    public function getSettlementAmount()
+    public function getSettlementAmount() : float
     {
         if ($this->settlementAmount) {
             return (float) $this->settlementAmount->value;
@@ -656,10 +634,8 @@ class Payment extends \Mollie\Api\Resources\BaseResource
     /**
      * The total amount that is already captured for this payment. Only available
      * when this payment supports captures.
-     *
-     * @return float
      */
-    public function getApplicationFeeAmount()
+    public function getApplicationFeeAmount() : float
     {
         if ($this->applicationFee) {
             return (float) $this->applicationFee->amount->value;

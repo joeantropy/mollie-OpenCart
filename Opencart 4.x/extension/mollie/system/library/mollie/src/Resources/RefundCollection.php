@@ -5,17 +5,11 @@ namespace Mollie\Api\Resources;
 class RefundCollection extends \Mollie\Api\Resources\CursorCollection
 {
     /**
-     * @return string
+     * The name of the collection resource in Mollie's API.
      */
-    public function getCollectionResourceName()
-    {
-        return "refunds";
-    }
+    public static string $collectionName = 'refunds';
     /**
-     * @return BaseResource
+     * Resource class name.
      */
-    protected function createResourceObject()
-    {
-        return new \Mollie\Api\Resources\Refund($this->client);
-    }
+    public static string $resource = \Mollie\Api\Resources\Refund::class;
 }

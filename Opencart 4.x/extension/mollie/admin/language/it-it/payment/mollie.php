@@ -60,6 +60,11 @@ $_['text_mollie_alma']           = $method_list_logo;
 $_['text_mollie_riverty']        = $method_list_logo;
 $_['text_mollie_payconiq']       = $method_list_logo;
 $_['text_mollie_satispay']       = $method_list_logo;
+$_['text_mollie_multibanco']     = $method_list_logo;
+$_['text_mollie_bizum']          = $method_list_logo;
+$_['text_mollie_mbway']          = $method_list_logo;
+$_['text_mollie_paybybank']      = $method_list_logo;
+$_['text_mollie_swish']          = $method_list_logo;
 
 // Heading
 $_['heading_title']           = "Mollie";
@@ -73,7 +78,7 @@ $_['title_mail']              = "Email";
 $_['name_mollie_banktransfer']   = "Trasferimento bancario";
 $_['name_mollie_belfius']        = "Belfius Direct Net";
 $_['name_mollie_creditcard']     = "Creditcard";
-$_['name_mollie_ideal']          = "iDEAL";
+$_['name_mollie_ideal']          = "iDEAL | Wero";
 $_['name_mollie_kbc']            = "KBC/CBC Payment Button";
 $_['name_mollie_bancontact']     = "Bancontact";
 $_['name_mollie_paypal']         = "PayPal";
@@ -85,7 +90,7 @@ $_['name_mollie_klarnasliceit']  = 'Klarna Slice It';
 $_['name_mollie_przelewy_24']  	 = 'P24';
 $_['name_mollie_applepay']  	 = 'Apple Pay';
 $_['name_mollie_voucher']        = "Voucher";
-$_['name_mollie_in_3']           = "iDEAL in3";
+$_['name_mollie_in_3']           = "iDEAL | Wero in3";
 $_['name_mollie_mybank']         = "MyBank";
 $_['name_mollie_billie']         = "Billie";
 $_['name_mollie_klarna']         = "Pay with Klarna";
@@ -97,6 +102,11 @@ $_['name_mollie_alma']           = "Alma";
 $_['name_mollie_riverty']        = "Riverty";
 $_['name_mollie_payconiq']       = "Payconiq";
 $_['name_mollie_satispay']       = "Satispay";
+$_['name_mollie_multibanco']     = "Multibanco";
+$_['name_mollie_bizum']          = "Bizum";
+$_['name_mollie_mbway']          = "MB Way";
+$_['name_mollie_paybybank']      = "Paga tramite banca";
+$_['name_mollie_swish']          = "Swish";
 
 // Text
 $_['text_edit']                    = "Modificare";
@@ -187,11 +197,11 @@ $_['entry_payment_fee_tax_class']  = "Classe di imposta della commissione di pag
 $_['entry_total']                  = "Totale";
 $_['entry_minimum']                = "Minimo";
 $_['entry_maximum']                = "Massimo";
-$_['entry_api_to_use']             = "API da utilizzare";
 $_['entry_payment_link']  		     = "Invia link di pagamento";
 $_['entry_payment_link_sep_email']   = "Invia in un'e-mail separata";
 $_['entry_payment_link_ord_email']   = "Invia un'e-mail di conferma dell'ordine";
 $_['entry_partial_credit_order']     = 'Creare un ordine di credito sul rimborso (parziale)';
+$_['entry_notify']                   = 'Avvisare il cliente';
 
 
 // Help
@@ -245,14 +255,14 @@ $_['entry_processing_status']     = "Stato pagamento riuscito";
 $_['entry_refund_status']         = "Stato rimborso pagamento";
 $_['entry_partial_refund_status'] = "Stato di rimborso parziale";
 $_['entry_shipping_status']       = "Stato dell'ordine spedito";
-$_['entry_shipment']              = "Crea spedizione";
-$_['entry_create_shipment_status'] = "Crea spedizione dopo lo stato dell'ordine";
-$_['help_shipment']               = "La spedizione verrà creata subito dopo la creazione dell'ordine. Seleziona 'No' per creare la spedizione quando l'ordine raggiunge uno stato specifico e seleziona lo stato dell'ordine dal basso.";
+$_['entry_shipment']              = "Crea catturare";
+$_['entry_create_shipment_status'] = "Crea catturare dopo lo stato dell'ordine";
+$_['help_shipment']               = "La catturare verrà creata subito dopo la creazione dell'ordine. Seleziona 'No' per creare la catturare quando l'ordine raggiunge uno stato specifico e seleziona lo stato dell'ordine dal basso.";
 
-$_['text_create_shipment_automatically']      = "Crea la spedizione automaticamente alla creazione dell'ordine";
-$_['text_create_shipment_on_status']          = "Crea spedizione dopo aver impostato l'ordine su questo stato";
-$_['text_create_shipment_on_order_complete']  = "Crea spedizione impostando l'ordine per completare lo stato dell'ordine";
-$_['entry_create_shipment_on_order_complete'] = "Crea spedizione al completamento dell'ordine";
+$_['text_create_shipment_automatically']      = "Crea la catturare automaticamente alla creazione dell'ordine";
+$_['text_create_shipment_on_status']          = "Crea catturare dopo aver impostato l'ordine su questo stato";
+$_['text_create_shipment_on_order_complete']  = "Crea catturare impostando l'ordine per completare lo stato dell'ordine";
+$_['entry_create_shipment_on_order_complete'] = "Crea catturare al completamento dell'ordine";
 
 // Button
 $_['button_update']         = "Aggiorna";

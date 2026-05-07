@@ -60,6 +60,11 @@ $_['text_mollie_alma']           = $method_list_logo;
 $_['text_mollie_riverty']        = $method_list_logo;
 $_['text_mollie_payconiq']       = $method_list_logo;
 $_['text_mollie_satispay']       = $method_list_logo;
+$_['text_mollie_multibanco']     = $method_list_logo;
+$_['text_mollie_bizum']          = $method_list_logo;
+$_['text_mollie_mbway']          = $method_list_logo;
+$_['text_mollie_paybybank']      = $method_list_logo;
+$_['text_mollie_swish']          = $method_list_logo;
 
 // Heading
 $_['heading_title']         = "Mollie";
@@ -74,7 +79,7 @@ $_['name_mollie_bancontact']     = "Bancontact";
 $_['name_mollie_banktransfer']   = "Transferencia bancaria";
 $_['name_mollie_belfius']        = "Belfius Direct Net";
 $_['name_mollie_creditcard']     = "Creditcard";
-$_['name_mollie_ideal']          = "iDEAL";
+$_['name_mollie_ideal']          = "iDEAL | Wero";
 $_['name_mollie_kbc']            = "KBC/CBC-Betaalknop";
 $_['name_mollie_paypal']         = "PayPal";
 $_['name_mollie_giftcard']       = 'Giftcard';
@@ -85,7 +90,7 @@ $_['name_mollie_klarnasliceit']  = 'Klarna Slice It';
 $_['name_mollie_przelewy_24']  	 = 'P24';
 $_['name_mollie_applepay']  	 = 'Apple Pay';
 $_['name_mollie_voucher']        = "Voucher";
-$_['name_mollie_in_3']           = "iDEAL in3";
+$_['name_mollie_in_3']           = "iDEAL | Wero in3";
 $_['name_mollie_mybank']         = "MyBank";
 $_['name_mollie_billie']         = "Billie";
 $_['name_mollie_klarna']         = "Pay with Klarna";
@@ -97,6 +102,11 @@ $_['name_mollie_alma']           = "Alma";
 $_['name_mollie_riverty']        = "Riverty";
 $_['name_mollie_payconiq']       = "Payconiq";
 $_['name_mollie_satispay']       = "Satispay";
+$_['name_mollie_multibanco']     = "Multibanco";
+$_['name_mollie_bizum']          = "Bizum";
+$_['name_mollie_mbway']          = "MB Way";
+$_['name_mollie_paybybank']      = "Pagar por banco";
+$_['name_mollie_swish']          = "Swish";
 
 // Text
 $_['text_edit']                     = "Corregir Mollie";
@@ -186,11 +196,11 @@ $_['entry_payment_fee_tax_class']    = "Payment Fee Tax Class";
 $_['entry_total']				     = "Total";
 $_['entry_minimum']				     = "Mínima";
 $_['entry_maximum']				     = "Máxima";
-$_['entry_api_to_use']  		     = "API para usar";
 $_['entry_payment_link']  		     = "Enviar enlace de pago";
 $_['entry_payment_link_sep_email']   = "Enviar en un correo electrónico separado";
 $_['entry_payment_link_ord_email']   = "Enviar correo electrónico de confirmación del pedido";
 $_['entry_partial_credit_order']     = 'Crear orden de crédito en reembolso (parcial)';
+$_['entry_notify']                   = 'Notificar a la cliente';
 
 // Help
 $_['help_view_profile']             = 'Puede encontrar su clave API en  <a href="https://www.mollie.com/dashboard/settings/profiles/" target="_blank" class="alert-link">sus 
@@ -245,14 +255,14 @@ $_['entry_processing_status']        = "Estado del pago vencido";
 $_['entry_refund_status']	         = "Estado del pago reembolso";
 $_['entry_partial_refund_status']	 = "Estado de reembolso parcial";
 $_['entry_shipping_status']          = "Estado del pedido enviado";
-$_['entry_shipment']       			 = "Crear envío";
-$_['entry_create_shipment_status']   = "Crear envío después del estado del pedido";
-$_['help_shipment'] 				 = "El envío se creará justo después de crear el pedido. Seleccione 'No' para crear el envío cuando el pedido llegue a un estado específico y seleccione el estado del pedido a continuación.";
+$_['entry_shipment']       			 = "Crear captura";
+$_['entry_create_shipment_status']   = "Crear captura después del estado del pedido";
+$_['help_shipment'] 				 = "El captura se creará justo después de crear el pedido. Seleccione 'No' para crear el captura cuando el pedido llegue a un estado específico y seleccione el estado del pedido a continuación.";
 
-$_['text_create_shipment_automatically']            = "Crear envío automáticamente al crear el pedido";
-$_['text_create_shipment_on_status']                = "Crear envío al establecer orden a este estado";
-$_['text_create_shipment_on_order_complete']        = "Crear envío al establecer orden para ordenar estado completo";
-$_['entry_create_shipment_on_order_complete'] 		= "Crear envío al completar el pedido";
+$_['text_create_shipment_automatically']            = "Crear captura automáticamente al crear el pedido";
+$_['text_create_shipment_on_status']                = "Crear captura al establecer orden a este estado";
+$_['text_create_shipment_on_order_complete']        = "Crear captura al establecer orden para ordenar estado completo";
+$_['entry_create_shipment_on_order_complete'] 		= "Crear captura al completar el pedido";
 
 //Button
 $_['button_update']         = "Actualizar";

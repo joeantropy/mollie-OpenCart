@@ -3,6 +3,9 @@
 namespace Mollie\Api\Resources;
 
 use Mollie\Api\Types\OnboardingStatus;
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class Onboarding extends \Mollie\Api\Resources\BaseResource
 {
     /**
@@ -32,25 +35,16 @@ class Onboarding extends \Mollie\Api\Resources\BaseResource
      * @var \stdClass
      */
     public $_links;
-    /**
-     * @return bool
-     */
-    public function needsData()
+    public function needsData() : bool
     {
-        return $this->status === \Mollie\Api\Types\OnboardingStatus::NEEDS_DATA;
+        return $this->status === OnboardingStatus::NEEDS_DATA;
     }
-    /**
-     * @return bool
-     */
-    public function isInReview()
+    public function inReview() : bool
     {
-        return $this->status === \Mollie\Api\Types\OnboardingStatus::IN_REVIEW;
+        return $this->status === OnboardingStatus::IN_REVIEW;
     }
-    /**
-     * @return bool
-     */
-    public function isCompleted()
+    public function isCompleted() : bool
     {
-        return $this->status === \Mollie\Api\Types\OnboardingStatus::COMPLETED;
+        return $this->status === OnboardingStatus::COMPLETED;
     }
 }

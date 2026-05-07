@@ -5,17 +5,11 @@ namespace Mollie\Api\Resources;
 class TerminalCollection extends \Mollie\Api\Resources\CursorCollection
 {
     /**
-     * @return string
+     * The name of the collection resource in Mollie's API.
      */
-    public function getCollectionResourceName()
-    {
-        return "terminals";
-    }
+    public static string $collectionName = 'terminals';
     /**
-     * @return BaseResource
+     * Resource class name.
      */
-    protected function createResourceObject()
-    {
-        return new \Mollie\Api\Resources\Terminal($this->client);
-    }
+    public static string $resource = \Mollie\Api\Resources\Terminal::class;
 }

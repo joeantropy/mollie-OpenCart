@@ -33,7 +33,7 @@
                         <tbody>
                         {% for productline in productlines %}
                         <tr>
-                            <td class="text-center"><input type="checkbox" name="productline[{{ productline['order_product_id'] }}][selected]" value="1" /><input type="hidden" name="productline[{{ productline['order_product_id'] }}][orderline_id]" value="{{ productline['id'] }}" /></td>
+                            <td class="text-center"><input type="checkbox" name="productline[{{ productline['order_product_id'] }}][selected]" value="1" /><input type="hidden" name="productline[{{ productline['order_product_id'] }}][order_product_id]" value="{{ productline['order_product_id'] }}" /></td>
                             <td class="text-start">{{ productline['name'] }}{% for option in productline.option %}
                                 <br/>
                                 {% if option.type != 'file' %}
@@ -124,7 +124,7 @@ if (!confirm('{{ text_confirm_refund }}')) {
         html += '</tr>';
         $('#mollie-refund tbody').append(html);
 
-        $('#payment-status').removeClass().addClass("label label-primary").html('REFUNDED');
+        $('#payment-status').removeClass().addClass("badge bg-primary").html('REFUNDED');
         $('#button-refund').remove();
         $('#mollie-refund').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
       }

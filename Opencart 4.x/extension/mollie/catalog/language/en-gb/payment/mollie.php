@@ -32,7 +32,7 @@
  */
 
 /**
- * English language file for iDEAL by Mollie
+ * English language file for iDEAL | Wero by Mollie
  */
 
 // Text
@@ -40,6 +40,7 @@ $_['heading_title']             = 'Payment by Mollie';
 $_['ideal_title']               = 'Your payment';
 $_['text_title']                = 'Pay online';
 $_['text_redirected']           = 'The client has been referred to the payment screen';
+$_['text_issuer_ideal']         = 'Select your bank';
 $_['text_issuer_giftcard']      = 'Select your giftcard';
 $_['text_issuer_kbc']           = 'Select your payment button.';
 $_['text_issuer_voucher']       = 'Select your brand.';
@@ -59,12 +60,14 @@ $_['text_payment_link_full_title']	= 'Mollie Payment Link - Full Amount';
 $_['text_payment_link_open_title']	= 'Mollie Payment Link - Open Amount';
 $_['text_cancelled']                = 'Subscription has been cancelled';
 $_['text_subscription_cancel_confirm']  = 'Do you want to cancel the subscription?';
+$_['text_mollie_open_payment'] = 'There is still an open payment of <strong>%s</strong> for this order.';
 
 // Button
 $_['button_retry']          = 'Return to checkout page';
 $_['button_report']         = 'Report Error';
 $_['button_submit']         = 'Submit';
 $_['button_subscription_cancel'] = 'Cancel Subscription';
+$_['button_mollie_pay_now'] = 'Pay now';
 
 // Entry
 $_['entry_card_holder']     	= 'Card Holder Name';
@@ -107,7 +110,7 @@ $_['refund_cancelled']   = 'Refund has been cancelled.';
 $_['refund_success'] 	 = 'Refund has been processed successfully!';
 
 // Methods
-$_['method_ideal']          = 'iDEAL';
+$_['method_ideal']          = 'iDEAL | Wero';
 $_['method_creditcard']     = 'Creditcard';
 $_['method_bancontact']     = 'Bancontact';
 $_['method_banktransfer']   = 'Bank transfer';
@@ -122,7 +125,7 @@ $_['method_klarnasliceit']  = 'Klarna Slice It';
 $_['method_przelewy24']  	= 'P24';
 $_['method_applepay']    	= 'Apple Pay';
 $_['method_voucher']    	= 'Voucher';
-$_['method_in3']    	    = 'iDEAL in3';
+$_['method_in3']    	    = 'iDEAL | Wero in3';
 $_['method_mybank']         = 'MyBank';
 $_['method_billie']         = 'Billie';
 $_['method_klarna']         = 'Pay with Klarna';
@@ -134,6 +137,11 @@ $_['method_alma']           = 'Alma';
 $_['method_riverty']        = 'Riverty';
 $_['method_payconiq']       = 'Payconiq';
 $_['method_satispay']       = 'Satispay';
+$_['method_multibanco']     = "Multibanco";
+$_['method_bizum']          = "Bizum";
+$_['method_mbway']          = "MB Way";
+$_['method_paybybank']      = "Pay By Bank";
+$_['method_swish']          = "Swish";
 
 //Round Off Description
 $_['roundoff_description']  = 'Rounding difference due to currency conversion';

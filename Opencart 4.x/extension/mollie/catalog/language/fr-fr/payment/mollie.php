@@ -41,6 +41,7 @@ $_['ideal_title']               = 'Votre paiement';
 $_['text_title']                = 'Payez en ligne';
 $_['text_redirected']           = 'Le client a été renvoyé à l\'écran de paiement';
 $_['text_issuer_giftcard']      = 'Sélectionnez votre carte-cadeau:';
+$_['text_issuer_ideal']         = 'Choisissez votre banque';
 $_['text_issuer_kbc']           = 'Sélectionnez votre bouton de paiement:';
 $_['text_issuer_voucher']       = 'Sélectionnez votre marque:';
 $_['text_card_details']         = 'S\'il vous plaît entrer les détails de votre carte de crédit.';
@@ -59,12 +60,14 @@ $_['text_payment_link_full_title']	    = 'Lien de paiement Mollie - Montant tota
 $_['text_payment_link_open_title']	    = 'Lien de paiement Mollie - Montant ouvert';
 $_['text_cancelled']                    = 'Le paiement récurrent a été annulé';
 $_['text_subscription_cancel_confirm']  = 'Voulez-vous annuler l\'abonnement ?';
+$_['text_mollie_open_payment'] = 'Il y a encore un paiement en attente de <strong>%s</strong> pour cette commande.';
 
 // Button
 $_['button_retry']          = 'Retour à la page de paiement';
 $_['button_report']         = 'Report Error';
 $_['button_submit']         = 'Soumettre';
 $_['button_subscription_cancel'] = 'Annuler l\'abonnement';
+$_['button_mollie_pay_now']    = 'Payer maintenant';
 
 // Entry
 $_['entry_card_holder']     	= 'Card Holder Name';
@@ -107,7 +110,7 @@ $_['refund_cancelled']   = 'Le remboursement a été annulé.';
 $_['refund_success'] 	 = 'Le remboursement a été traité avec succès!';
 
 // Methods
-$_['method_ideal']          = 'iDEAL';
+$_['method_ideal']          = 'iDEAL | Wero';
 $_['method_creditcard']     = 'Creditcard';
 $_['method_bancontact']     = 'Bancontact';
 $_['method_banktransfer']   = 'Bank transfer';
@@ -122,7 +125,7 @@ $_['method_klarnasliceit']  = 'Klarna Slice It';
 $_['method_przelewy24']     = 'P24';
 $_['method_applepay']    	= 'Apple Pay';
 $_['method_voucher']    	= 'Voucher';
-$_['method_in3']    	    = 'iDEAL in3';
+$_['method_in3']    	    = 'iDEAL | Wero in3';
 $_['method_mybank']         = 'MyBank';
 $_['method_billie']         = 'Billie';
 $_['method_klarna']         = 'Payer avec Klarna';
@@ -134,6 +137,11 @@ $_['method_alma']           = 'Alma';
 $_['method_riverty']        = 'Riverty';
 $_['method_payconiq']       = 'Payconiq';
 $_['method_satispay']       = 'Satispay';
+$_['method_multibanco']     = "Multibanco";
+$_['method_bizum']          = "Bizum";
+$_['method_mbway']          = "MB Way";
+$_['method_paybybank']      = "Paiement par virement bancaire";
+$_['method_swish']          = "Swish";
 
 //Round Off Description
 $_['roundoff_description']  = 'Dû à la conversion de devise, il se peut qu’il y ait un écart d’arrondi';

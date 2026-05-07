@@ -60,6 +60,11 @@ $_['text_mollie_alma']              = $method_list_logo;
 $_['text_mollie_riverty']           = $method_list_logo;
 $_['text_mollie_payconiq']          = $method_list_logo;
 $_['text_mollie_satispay']          = $method_list_logo;
+$_['text_mollie_multibanco']        = $method_list_logo;
+$_['text_mollie_bizum']             = $method_list_logo;
+$_['text_mollie_mbway']             = $method_list_logo;
+$_['text_mollie_paybybank']         = $method_list_logo;
+$_['text_mollie_swish']             = $method_list_logo;
 
 // Heading
 $_['heading_title']           = "Mollie";
@@ -73,7 +78,7 @@ $_['title_mail']              = "Email";
 $_['name_mollie_banktransfer']   = "Bankoverførsel";
 $_['name_mollie_belfius']        = "Belfius Direct Net";
 $_['name_mollie_creditcard']     = "Creditcard";
-$_['name_mollie_ideal']          = "iDEAL";
+$_['name_mollie_ideal']          = "iDEAL | Wero";
 $_['name_mollie_kbc']            = "KBC/CBC Payment Button";
 $_['name_mollie_bancontact']     = "Bancontact";
 $_['name_mollie_paypal']         = "PayPal";
@@ -85,7 +90,7 @@ $_['name_mollie_klarnasliceit']  = 'Klarna Slice It';
 $_['name_mollie_przelewy24']  	 = 'P24';
 $_['name_mollie_applepay']  	 = 'Apple Pay';
 $_['name_mollie_voucher']        = "Voucher";
-$_['name_mollie_in3']            = "iDEAL in3";
+$_['name_mollie_in3']            = "iDEAL | Wero in3";
 $_['name_mollie_mybank']         = "MyBank";
 $_['name_mollie_billie']         = "Billie";
 $_['name_mollie_klarna']         = "Pay with Klarna";
@@ -97,6 +102,11 @@ $_['name_mollie_alma']           = "Alma";
 $_['name_mollie_riverty']        = "Riverty";
 $_['name_mollie_payconiq']       = "Payconiq";
 $_['name_mollie_satispay']       = "Satispay";
+$_['name_mollie_multibanco']     = "Multibanco";
+$_['name_mollie_bizum']          = "Bizum";
+$_['name_mollie_mbway']          = "MB Way";
+$_['name_mollie_paybybank']      = "Betal via bank";
+$_['name_mollie_swish']          = "Swish";
 
 // Text
 $_['text_edit']                    = "Redigere";
@@ -187,11 +197,11 @@ $_['entry_payment_fee_tax_class']  = "Betalingsgebyr Skatteklasse";
 $_['entry_total']                  = "I alt";
 $_['entry_minimum']                = "Minimum";
 $_['entry_maximum']                = "Maksimum";
-$_['entry_api_to_use']             = "API til brug";
-$_['entry_payment_link']  		     = "Send betalingslink";
-$_['entry_payment_link_sep_email']   = "Send en separat e-mail";
-$_['entry_payment_link_ord_email']   = "Send en ordrebekræftelse e-mail";
-$_['entry_partial_credit_order']     = 'Opret kreditordre på (delvis) tilbagebetaling';
+$_['entry_payment_link']  		   = "Send betalingslink";
+$_['entry_payment_link_sep_email'] = "Send en separat e-mail";
+$_['entry_payment_link_ord_email'] = "Send en ordrebekræftelse e-mail";
+$_['entry_partial_credit_order']   = 'Opret kreditordre på (delvis) tilbagebetaling';
+$_['entry_notify']                 = 'Giv kunden besked';
 
 // Help
 $_['help_view_profile']            = 'Du kan finde din API-nøgle i <a href="https://www.mollie.com/dashboard/settings/profiles/" target="_blank" class="alert-link" >dine Mollie hjemmeside-profiler</a>.';
@@ -242,14 +252,14 @@ $_['entry_processing_status']     = "Betalingen lykkedes";
 $_['entry_refund_status']         = "Betalingsrefusionsstatus";
 $_['entry_partial_refund_status'] = "Delvis tilbagebetalingsstatus";
 $_['entry_shipping_status']       = "Ordre afsendt status";
-$_['entry_shipment']              = "Opret forsendelse";
-$_['entry_create_shipment_status'] = "Opret forsendelse efter ordrestatus";
-$_['help_shipment']               = "Forsendelse vil blive oprettet lige efter oprettelse af ordre. Vælg 'Nej' for at oprette forsendelse, når ordren når en specifik status og vælg ordrestatus nedefra.";
+$_['entry_shipment']              = "Opret fange";
+$_['entry_create_shipment_status'] = "Opret fange efter ordrestatus";
+$_['help_shipment']               = "Fange vil blive oprettet lige efter oprettelse af ordre. Vælg 'Nej' for at oprette fange, når ordren når en specifik status og vælg ordrestatus nedefra.";
 
-$_['text_create_shipment_automatically']      = "Opret forsendelse automatisk ved oprettelse af ordre";
-$_['text_create_shipment_on_status']          = "Opret forsendelse ved at sætte ordren til denne status";
-$_['text_create_shipment_on_order_complete']  = "Opret forsendelse ved at indstille ordren for at bestille komplet status";
-$_['entry_create_shipment_on_order_complete'] = "Opret forsendelse, når ordren er fuldført";
+$_['text_create_shipment_automatically']      = "Opret fange automatisk ved oprettelse af ordre";
+$_['text_create_shipment_on_status']          = "Opret fange ved at sætte ordren til denne status";
+$_['text_create_shipment_on_order_complete']  = "Opret fange ved at indstille ordren for at bestille komplet status";
+$_['entry_create_shipment_on_order_complete'] = "Opret fange, når ordren er fuldført";
 
 // Button
 $_['button_update']         = "Opdater";
@@ -264,4 +274,33 @@ $_['error_log_warning'] = 'Advarsel: Din mollie-logfil %s er %s!';
 $_['button_download']   = 'Download';
 
 // Summernote
-$_['summernote']                    = 'da-DK';
+$_['summernote']                    = 'da-dk';
+
+// sale/order
+$_['button_refund'] = 'Refusion';
+$_['text_order_not_found'] = 'Mollie ordreoplysninger ikke fundet!';
+$_['text_no_refund'] = 'Refusion kan ikke behandles!';
+$_['text_refunded_already'] = 'Refusion er allerede behandlet!';
+$_['text_refund_success'] = 'Refusion er behandlet!';
+$_['text_confirm_refund'] = 'Du er ved at refundere denne betaling. Dette kan ikke fortrydes. Er du sikker på, at du vil fortsætte?';
+$_['entry_amount'] = 'Beløb';
+$_['button_partial_refund'] = 'Delvis refusion';
+$_['error_refund_amount'] = 'Advarsel: Indtast venligst det korrekte beløb, der skal refunderes!';
+$_['text_partial_refund_success'] = 'Delvis refusion af beløb %s er blevet behandlet!';
+$_['entry_partial_refund_type'] = 'Refusionstype';
+$_['text_custom_amount'] = 'Refusion af brugerdefineret beløb';
+$_['text_productline'] = 'Refusion af produktlinje';
+$_['entry_productline'] = 'Produktlinjer';
+$_['entry_quantity'] = 'Antal';
+$_['help_quantity'] = 'Antal, der skal refunderes. Må ikke overstige den bestilte mængde.';
+$_['error_productline'] = 'Advarsel: Vælg venligst en produktlinje, der skal refunderes!';
+$_['tab_mollie'] = 'Mollie';
+$_['text_mollie_payment'] = 'Betaling(er)';
+$_['text_mollie_refund'] = 'Refusion(er)';
+$_['column_date_added'] = 'Dato tilføjet';
+$_['column_payment_method'] = 'Betalingsmetode';
+$_['column_amount'] = 'Beløb';
+$_['column_status'] = 'Status';
+$_['button_payment_link'] = 'Send betalingslink';
+$_['column_stock_mutation'] = 'Lagerændring';
+$_['help_stock_mutation'] = 'Vælg, om du vil genopfylde de krediterede produkter';

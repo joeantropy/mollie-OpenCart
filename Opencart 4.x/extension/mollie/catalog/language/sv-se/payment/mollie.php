@@ -32,7 +32,7 @@
  */
 
 /**
- * English language file for iDEAL by Mollie
+ * Swedish language file for iDEAL | Wero by Mollie
  */
 
 // Text
@@ -41,7 +41,8 @@ $_['ideal_title']                       = 'Din betalning';
 $_['text_title']                        = 'Betala online';
 $_['text_redirected']                   = 'Klienten har hänvisats till betalningsskärmen';
 $_['text_issuer_giftcard']              = 'Välj ditt presentkort';
-$_['text_issuer_kbc']                   = 'Välj din betalningsknapp.';
+$_['text_issuer_ideal']                 = 'Välj din bank';
+$_['text_issuer_kbc']                   = 'Välj din betalningsknap.';
 $_['text_issuer_voucher']               = 'Välj ditt varumärke.';
 $_['text_card_details']                 = 'Ange dina kreditkortsuppgifter.';
 $_['text_mollie_payments']              = 'Säker betalning från %s';
@@ -59,12 +60,14 @@ $_['text_payment_link_full_title']	    = 'Mollie betalningslänk - Hela beloppet
 $_['text_payment_link_open_title']	    = 'Mollie betalningslänk - Öppet belopp';
 $_['text_cancelled']                    = 'Återkommande betalning har avbrutits';
 $_['text_subscription_cancel_confirm']  = 'Vill du säga upp prenumerationen?';
+$_['text_mollie_open_payment'] 			= 'Det finns fortfarande en öppen betalning på <strong>%s</strong> för denna beställning.';
 
 // Button
 $_['button_retry']  = 'Återgå till kassasidan';
 $_['button_report'] = 'Rapportera fel';
 $_['button_submit'] = 'Skicka';
 $_['button_subscription_cancel'] = 'Avsluta prenumeration';
+$_['button_mollie_pay_now']    = 'Betala nu';
 
 // Entry
 $_['entry_card_holder']         = 'Kortinnehavarens namn';
@@ -107,7 +110,7 @@ $_['refund_cancelled']      = 'Återbetalning har avbrutits.';
 $_['refund_success']        = 'Återbetalning har behandlats framgångsrikt!';
 
 // Methods
-$_['method_ideal']          = 'iDEAL';
+$_['method_ideal']          = 'iDEAL | Wero';
 $_['method_creditcard']     = 'Kreditkort';
 $_['method_bancontact']     = 'Bankontakt';
 $_['method_banktransfer']   = 'Banköverföring';
@@ -122,7 +125,7 @@ $_['method_klarnasliceit']  = 'Klarna Slice It';
 $_['method_przelewy24']     = 'P24';
 $_['method_applepay']       = 'Apple Pay';
 $_['method_voucher']        = 'Kupong';
-$_['method_in3']            = 'iDEAL in3';
+$_['method_in3']            = 'iDEAL | Wero in3';
 $_['method_mybank']         = 'MyBank';
 $_['method_billie']         = 'Billie';
 $_['method_klarna']         = 'Betala med Klarna';
@@ -134,6 +137,11 @@ $_['method_alma']           = 'Alma';
 $_['method_riverty']        = 'Riverty';
 $_['method_payconiq']       = 'Payconiq';
 $_['method_satispay']       = 'Satispay';
+$_['method_multibanco']     = "Multibanco";
+$_['method_bizum']          = "Bizum";
+$_['method_mbway']          = "MB Way";
+$_['method_paybybank']      = "Betala via bank";
+$_['method_swish']          = "Swish";
 
 //Round Off Description
 $_['roundoff_description'] = 'Avrundningsskillnad på grund av valutaomvandling';

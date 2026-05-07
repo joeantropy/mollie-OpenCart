@@ -60,6 +60,11 @@ $_['text_mollie_alma']              = $method_list_logo;
 $_['text_mollie_riverty']           = $method_list_logo;
 $_['text_mollie_payconiq']          = $method_list_logo;
 $_['text_mollie_satispay']          = $method_list_logo;
+$_['text_mollie_multibanco']        = $method_list_logo;
+$_['text_mollie_bizum']             = $method_list_logo;
+$_['text_mollie_mbway']             = $method_list_logo;
+$_['text_mollie_paybybank']         = $method_list_logo;
+$_['text_mollie_swish']             = $method_list_logo;
 
 // Heading
 $_['heading_title']         = "Mollie";
@@ -74,7 +79,7 @@ $_['name_mollie_bancontact']     = "Bancontact";
 $_['name_mollie_banktransfer']   = "Übertragung";
 $_['name_mollie_belfius']        = "Belfius Direct Net";
 $_['name_mollie_creditcard']     = "Creditcard";
-$_['name_mollie_ideal']          = "iDEAL";
+$_['name_mollie_ideal']          = "iDEAL | Wero";
 $_['name_mollie_kbc']            = "KBC/CBC-Betaalknop";
 $_['name_mollie_paypal']         = "PayPal";
 $_['name_mollie_giftcard']       = 'Giftcard';
@@ -85,7 +90,7 @@ $_['name_mollie_klarnasliceit']  = 'Klarna Slice It';
 $_['name_mollie_przelewy24']  	 = 'P24';
 $_['name_mollie_applepay']  	 = 'Apple Pay';
 $_['name_mollie_voucher']        = "Voucher";
-$_['name_mollie_in3']            = "iDEAL in3";
+$_['name_mollie_in3']            = "iDEAL | Wero in3";
 $_['name_mollie_mybank']         = "MyBank";
 $_['name_mollie_billie']         = "Billie";
 $_['name_mollie_klarna']         = "Pay with Klarna";
@@ -97,6 +102,11 @@ $_['name_mollie_alma']           = "Alma";
 $_['name_mollie_riverty']        = "Riverty";
 $_['name_mollie_payconiq']       = "Payconiq";
 $_['name_mollie_satispay']       = "Satispay";
+$_['name_mollie_multibanco']     = "Multibanco";
+$_['name_mollie_bizum']          = "Bizum";
+$_['name_mollie_mbway']          = "MB Way";
+$_['name_mollie_paybybank']      = "Zahlung per Bank";
+$_['name_mollie_swish']          = "Swish";
 
 // Text
 $_['text_edit']                     = "Mollie bearbeiten";
@@ -186,11 +196,11 @@ $_['entry_payment_fee_tax_class']    = "Payment Fee Tax Class";
 $_['entry_total']				     = "Gesamt";
 $_['entry_minimum']				     = "Minimum";
 $_['entry_maximum']				     = "Maximal";
-$_['entry_api_to_use']  		     = "API zu verwenden";
 $_['entry_payment_link']  		     = "Zahlungslink sendenZahlungslink senden";
 $_['entry_payment_link_sep_email']   = "Senden Sie eine separate E-Mail";
 $_['entry_payment_link_ord_email']   = "Senden Sie eine Bestellbestätigungs-E-Mail";
 $_['entry_partial_credit_order']     = 'Gutschrift bei (Teil-) Rückerstattung erstellen';
+$_['entry_notify']                   = 'Kunden benachrichtigen';
 
 // Help
 $_['help_view_profile']             = 'Sie können Ihren API Key auf <a href="https://www.mollie.com/dashboard/settings/profiles/" target="_blank" class="alert-link">Ihren Mollie-Webseiten-Profilen finden</a>.';
@@ -242,14 +252,14 @@ $_['entry_processing_status']        = "Status Zahlung erfolgreich";
 $_['entry_refund_status']	         = "Status Zahlung rückerstattung";
 $_['entry_partial_refund_status']	 = "Teilerstattungsstatus";
 $_['entry_shipping_status']          = "Versandstatus der Bestellung";
-$_['entry_shipment']       			 = "Sendung erstellen";
-$_['entry_create_shipment_status']   = "Erstellen Sie eine Sendung nach dem Bestellstatus";
-$_['help_shipment'] 				 = "Versand wird direkt nach dem Erstellen der Bestellung erstellt. Wählen Sie 'Nein', um die Sendung zu erstellen, wenn die Bestellung einen bestimmten Status erreicht, und wählen Sie den Bestellstatus von unten aus.";
+$_['entry_shipment']       			 = "Sendung erfassen";
+$_['entry_create_shipment_status']   = "Erfassen Sie eine Sendung nach dem Bestellstatus";
+$_['help_shipment'] 				 = "Versand wird direkt nach dem erfassen der Bestellung erstellt. Wählen Sie 'Nein', um die Sendung zu erfassen, wenn die Bestellung einen bestimmten Status erreicht, und wählen Sie den Bestellstatus von unten aus.";
 
-$_['text_create_shipment_automatically']            = "Erstellen Sie den Versand automatisch bei der Auftragserstellung";
+$_['text_create_shipment_automatically']            = "erfassen Sie den Versand automatisch bei der Auftragserstellung";
 $_['text_create_shipment_on_status']                = "Legen Sie eine Sendung an, wenn Sie den Auftrag auf diesen Status setzen";
-$_['text_create_shipment_on_order_complete']        = "Erstellen Sie eine Sendung, nachdem Sie den Status zum Bestellen der Bestellung festgelegt haben";
-$_['entry_create_shipment_on_order_complete'] 		= "Erstellen Sie den Versand nach Abschluss der Bestellung";
+$_['text_create_shipment_on_order_complete']        = "erfassen Sie eine Sendung, nachdem Sie den Status zum Bestellen der Bestellung festgelegt haben";
+$_['entry_create_shipment_on_order_complete'] 		= "erfassen Sie den Versand nach Abschluss der Bestellung";
 
 //Button
 $_['button_update']         = "Aktualisieren";
@@ -264,4 +274,33 @@ $_['error_log_warning']	   = 'Warnung: Ihre Fehlerprotokolldatei %s ist %s!';
 $_['button_download']	   = 'Herunterladen';
 
 // Summernote
-$_['summernote']                    = 'de-DE';
+$_['summernote']                    = 'de-de';
+
+// sale/order
+$_['button_refund'] = 'Rückerstattung';
+$_['text_order_not_found'] = 'Mollie Bestelldetails nicht gefunden!';
+$_['text_no_refund'] = 'Rückerstattung kann nicht bearbeitet werden!';
+$_['text_refunded_already'] = 'Rückerstattung wurde bereits bearbeitet!';
+$_['text_refund_success']     = 'Rückerstattung wurde erfolgreich bearbeitet!';
+$_['text_confirm_refund']     = 'Sie sind dabei, diese Zahlung zu erstatten. Dies kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten?';
+$_['entry_amount']     = 'Amount';
+$_['button_partial_refund']     = 'Teilerstattung';
+$_['error_refund_amount']       = 'Warnung: Bitte geben Sie einen korrekten Betrag für die Rückerstattung ein!';
+$_['text_partial_refund_success']     = 'eilrückerstattung des Betrags %s wurde erfolgreich bearbeitet!';
+$_['entry_partial_refund_type']     = 'Rückerstattungsart';
+$_['text_custom_amount']     = 'Rückerstattung des benutzerdefinierten Betrags';
+$_['text_productline']       = 'Produktlinien-Erstattung';
+$_['entry_productline']      = 'Produktlinien';
+$_['entry_quantity']         = 'Menge';
+$_['help_quantity']          = 'Zu erstattende Menge. Sollte die bestellte Menge nicht überschreiten.';
+$_['error_productline']      = 'Achtung: Bitte wählen Sie eine Produktlinie für die Rückerstattung aus!';
+$_['tab_mollie']             = 'Mollie';
+$_['text_mollie_payment']    = 'Zahlungen';
+$_['text_mollie_refund']     = 'Rückerstattungen';
+$_['column_date_added']      = 'Datum hinzugefügt';
+$_['column_payment_method']  = 'Zahlungsmethode';
+$_['column_amount']          = 'Betrag';
+$_['column_status']          = 'Status';
+$_['button_payment_link']    = 'Zahlungslink senden';
+$_['column_stock_mutation']   = 'Bestandsmutation';
+$_['help_stock_mutation']    = 'Wählen Sie aus, ob Sie die gutgeschriebenen Produkte wieder auf Lager haben möchten';

@@ -5,17 +5,11 @@ namespace Mollie\Api\Resources;
 class InvoiceCollection extends \Mollie\Api\Resources\CursorCollection
 {
     /**
-     * @return string
+     * The name of the collection resource in Mollie's API.
      */
-    public function getCollectionResourceName()
-    {
-        return "invoices";
-    }
+    public static string $collectionName = 'invoices';
     /**
-     * @return BaseResource
+     * Resource class name.
      */
-    protected function createResourceObject()
-    {
-        return new \Mollie\Api\Resources\Invoice($this->client);
-    }
+    public static string $resource = \Mollie\Api\Resources\Invoice::class;
 }

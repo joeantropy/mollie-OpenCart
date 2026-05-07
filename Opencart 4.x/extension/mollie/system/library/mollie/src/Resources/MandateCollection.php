@@ -5,32 +5,18 @@ namespace Mollie\Api\Resources;
 class MandateCollection extends \Mollie\Api\Resources\CursorCollection
 {
     /**
-     * @return string
+     * The name of the collection resource in Mollie's API.
      */
-    public function getCollectionResourceName()
-    {
-        return "mandates";
-    }
+    public static string $collectionName = 'mandates';
     /**
-     * @return BaseResource
+     * Resource class name.
      */
-    protected function createResourceObject()
-    {
-        return new \Mollie\Api\Resources\Mandate($this->client);
-    }
+    public static string $resource = \Mollie\Api\Resources\Mandate::class;
     /**
-     * @param string $status
-     * @return array|\Mollie\Api\Resources\MandateCollection
+     * @param  string  $status
      */
-    public function whereStatus($status)
+    public function whereStatus($status) : self
     {
-        $collection = new self($this->client, 0, $this->_links);
-        foreach ($this as $item) {
-            if ($item->status === $status) {
-                $collection[] = $item;
-                $collection->count++;
-            }
-        }
-        return $collection;
+        return $this->filter(fn(\Mollie\Api\Resources\Mandate $mandate) => $mandate->status === $status);
     }
 }

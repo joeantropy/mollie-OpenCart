@@ -123,10 +123,10 @@
 											<input type="text" name="{{ store['store_id'] }}_{{ code }}_{{ module_id }}_sort_order" value="{{ payment_method['sort_order'] }}" class="form-control" style="text-align:right;"/>
 										</div>
 										<div class="col-sm-2 text-end" style="{{ coming_soon == true ? 'display: none;' : '' }}">
-											<a href="#collapse-{{ (payment_method['name']|replace({" " : "-", "/" : "-"}))|lower }}-{{ store['store_id'] }}" data-bs-toggle="collapse" class="btn btn-primary button-more"><i class="fa fa-caret-down"></i></a>
+											<a href="#collapse-{{ (payment_method['name']|replace({" " : "-", "/" : "-", "|" : "-"}))|lower }}-{{ store['store_id'] }}" data-bs-toggle="collapse" class="btn btn-primary button-more"><i class="fa fa-caret-down"></i></a>
 										</div>
 									</div>
-									<div class="collapse payment-method-collapse" id="collapse-{{ (payment_method['name']|replace({" " : "-", "/" : "-"}))|lower }}-{{ store['store_id'] }}">
+									<div class="collapse payment-method-collapse" id="collapse-{{ (payment_method['name']|replace({" " : "-", "/" : "-", "|" : "-"}))|lower }}-{{ store['store_id'] }}">
 										<div class="card card-body" style=" border:1px solid #ddd;">
 											<div class="row mb-3">
 												<label class="col-sm-2 col-form-label">{{ entry_title }}</label>
@@ -171,21 +171,8 @@
 												</div>
 											</div>
 											<div class="row mb-3">
-												<label class="col-sm-2 col-form-label">{{ entry_api_to_use }}</label>
-												<div class="col-sm-8">
-													{% if module_id in ['alma'] %}
-													{% set payment_method = payment_method|merge({'api_to_use': 'payments_api'}) %}
-													{% endif %}
-													<select name="{{ store['store_id'] }}_{{ code }}_{{ module_id }}_api_to_use" class="form-select" {% if module_id in ['klarnapaylater', 'klarnasliceit', 'klarnapaynow', 'voucher', 'in3', 'klarna', 'billie', 'riverty', 'alma'] %}disabled="disabled"{% endif %}>
-														<option value="orders_api">{{ text_order_api }}</option>
-														<option value="payments_api" {% if payment_method['api_to_use'] == 'payments_api' %}selected="selected"{% endif %}>{{ text_payment_api }}</option>
-													</select>		
-												</div>
-												<div class="col-sm-2"><a href="https://docs.mollie.com/orders/why-use-orders" target="_blank"><i class="fa fa-info-circle "></i> {{ text_info_orders_api }}</a></div>
-											</div>
-											<div class="row mb-3">
 												<div class="col-sm-12">
-													<button type="button" onclick="save('{{ store['store_id'] }}', '{{ (payment_method['name']|replace({" " : "-", "/" : "-"}))|lower }}');" id="save-setting-{{ (payment_method['name']|replace({" " : "-", "/" : "-"}))|lower }}-{{ store['store_id'] }}" class="btn btn-secondary float-end"><i class="fa fa-save"></i>&nbsp;{{ button_save_close }}</button>
+													<button type="button" onclick="save('{{ store['store_id'] }}', '{{ (payment_method['name']|replace({" " : "-", "/" : "-", "|" : "-"}))|lower }}');" id="save-setting-{{ (payment_method['name']|replace({" " : "-", "/" : "-", "|" : "-"}))|lower }}-{{ store['store_id'] }}" class="btn btn-secondary float-end"><i class="fa fa-save"></i>&nbsp;{{ button_save_close }}</button>
 												</div>												
 											</div>											
 										</div>
@@ -196,7 +183,7 @@
 								<div id="payment-statuses-{{ store['store_id'] }}" class="tab-pane fade show">
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="{{ store['store_id'] }}_{{ code }}_ideal_pending_status_id">{{ entry_pending_status }}</label>
-										<div class="col-sm-10">
+										<div class="col-sm-4">
 											<select name="{{ store['store_id'] }}_{{ code }}_ideal_pending_status_id" id="{{ store['store_id'] }}_{{ code }}_ideal_pending_status_id" class="form-select">
 												{% for order_status in order_statuses %}
 													{% if order_status['order_status_id'] == store[code ~ '_ideal_pending_status_id'] %}
@@ -207,10 +194,17 @@
 												{% endfor %}
 											</select>
 										</div>
+                                        <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch form-switch-lg">
+                                            <input type="hidden" name="{{ store['store_id'] }}_{{ code }}_ideal_pending_status_notify" value="0"/>
+                                            <input type="checkbox" name="{{ store['store_id'] }}_{{ code }}_ideal_pending_status_notify" value="1" class="form-check-input" {% if store[code ~ '_ideal_pending_status_notify'] %}checked{% endif %}/>
+                                            </div>
+                                        </div>
 									</div>
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="{{ store['store_id'] }}_{{ code }}_ideal_failed_status_id">{{ entry_failed_status }}</label>
-										<div class="col-sm-10">
+										<div class="col-sm-4">
 											<select name="{{ store['store_id'] }}_{{ code }}_ideal_failed_status_id" id="{{ store['store_id'] }}_{{ code }}_ideal_failed_status_id" class="form-select">
 												{% if store[code ~ '_ideal_failed_status_id'] is empty %}
 												<option value="0" selected="selected">{{ text_no_status_id }}</option>
@@ -226,10 +220,17 @@
 												{% endfor %}
 											</select>
 										</div>
+                                        <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch form-switch-lg">
+                                            <input type="hidden" name="{{ store['store_id'] }}_{{ code }}_ideal_failed_status_notify" value="0"/>
+                                            <input type="checkbox" name="{{ store['store_id'] }}_{{ code }}_ideal_failed_status_notify" value="1" class="form-check-input" {% if store[code ~ '_ideal_failed_status_notify'] %}checked{% endif %}/>
+                                            </div>
+                                        </div>
 									</div>
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="{{ store['store_id'] }}_{{ code }}_ideal_canceled_status_id">{{ entry_canceled_status }}</label>
-										<div class="col-sm-10">
+										<div class="col-sm-4">
 											<select name="{{ store['store_id'] }}_{{ code }}_ideal_canceled_status_id" id="{{ store['store_id'] }}_{{ code }}_ideal_canceled_status_id" class="form-select">
 												{% if store[code ~ '_ideal_canceled_status_id'] is empty %}
 												<option value="0" selected="selected">{{ text_no_status_id }}</option>
@@ -245,10 +246,17 @@
 												{% endfor %}
 											</select>
 										</div>
+                                        <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch form-switch-lg">
+                                            <input type="hidden" name="{{ store['store_id'] }}_{{ code }}_ideal_canceled_status_notify" value="0"/>
+                                            <input type="checkbox" name="{{ store['store_id'] }}_{{ code }}_ideal_canceled_status_notify" value="1" class="form-check-input" {% if store[code ~ '_ideal_canceled_status_notify'] %}checked{% endif %}/>
+                                            </div>
+                                        </div>
 									</div>
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="{{ store['store_id'] }}_{{ code }}_ideal_expired_status_id">{{ entry_expired_status }}</label>
-										<div class="col-sm-10">
+										<div class="col-sm-4">
 											<select name="{{ store['store_id'] }}_{{ code }}_ideal_expired_status_id" id="{{ store['store_id'] }}_{{ code }}_ideal_expired_status_id" class="form-select">
 												{% if store[code ~ '_ideal_expired_status_id'] is empty %}
 												<option value="0" selected="selected">{{ text_no_status_id }}</option>
@@ -264,10 +272,17 @@
 												{% endfor %}
 											</select>
 										</div>
+                                        <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch form-switch-lg">
+                                            <input type="hidden" name="{{ store['store_id'] }}_{{ code }}_ideal_expired_status_notify" value="0"/>
+                                            <input type="checkbox" name="{{ store['store_id'] }}_{{ code }}_ideal_expired_status_notify" value="1" class="form-check-input" {% if store[code ~ '_ideal_expired_status_notify'] %}checked{% endif %}/>
+                                            </div>
+                                        </div>
 									</div>
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="{{ store['store_id'] }}_{{ code }}_ideal_processing_status_id">{{ entry_processing_status }}</label>
-										<div class="col-sm-10">
+										<div class="col-sm-4">
 											<select name="{{ store['store_id'] }}_{{ code }}_ideal_processing_status_id" id="{{ store['store_id'] }}_{{ code }}_ideal_processing_status_id" class="form-select">
 												{% for order_status in order_statuses %}
 													{% if order_status['order_status_id'] == store[code ~ '_ideal_processing_status_id'] %}
@@ -278,10 +293,17 @@
 												{% endfor %}
 											</select>
 										</div>
+                                        <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch form-switch-lg">
+                                            <input type="hidden" name="{{ store['store_id'] }}_{{ code }}_ideal_processing_status_notify" value="0"/>
+                                            <input type="checkbox" name="{{ store['store_id'] }}_{{ code }}_ideal_processing_status_notify" value="1" class="form-check-input" {% if store[code ~ '_ideal_processing_status_notify'] %}checked{% endif %}/>
+                                            </div>
+                                        </div>
 									</div>
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="{{ store['store_id'] }}_{{ code }}_ideal_shipping_status_id">{{ entry_shipping_status }}</label>
-										<div class="col-sm-10">
+										<div class="col-sm-4">
 											<select name="{{ store['store_id'] }}_{{ code }}_ideal_shipping_status_id" id="{{ store['store_id'] }}_{{ code }}_ideal_shipping_status_id" class="form-select">
 												{% for order_status in order_statuses %}
 													{% if order_status['order_status_id'] == store[code ~ '_ideal_shipping_status_id'] %}
@@ -292,11 +314,18 @@
 												{% endfor %}
 											</select>
 										</div>
+                                        <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch form-switch-lg">
+                                            <input type="hidden" name="{{ store['store_id'] }}_{{ code }}_ideal_shipping_status_notify" value="0"/>
+                                            <input type="checkbox" name="{{ store['store_id'] }}_{{ code }}_ideal_shipping_status_notify" value="1" class="form-check-input" {% if store[code ~ '_ideal_shipping_status_notify'] %}checked{% endif %}/>
+                                            </div>
+                                        </div>
 									</div>
 
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="{{ store['store_id'] }}_{{ code }}_ideal_refund_status_id">{{ entry_refund_status }}</label>
-										<div class="col-sm-10">
+										<div class="col-sm-4">
 											<select name="{{ store['store_id'] }}_{{ code }}_ideal_refund_status_id" id="{{ store['store_id'] }}_{{ code }}_ideal_refund_status_id" class="form-select">
 												{% for order_status in order_statuses %}
 													{% if order_status['order_status_id'] == store[code ~ '_ideal_refund_status_id'] %}
@@ -307,11 +336,18 @@
 												{% endfor %}
 											</select>
 										</div>
+                                        <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch form-switch-lg">
+                                            <input type="hidden" name="{{ store['store_id'] }}_{{ code }}_ideal_refund_status_notify" value="0"/>
+                                            <input type="checkbox" name="{{ store['store_id'] }}_{{ code }}_ideal_refund_status_notify" value="1" class="form-check-input" {% if store[code ~ '_ideal_refund_status_notify'] %}checked{% endif %}/>
+                                            </div>
+                                        </div>
 									</div>
 
 									<div class="row mb-3">
 										<label class="col-sm-2 col-form-label" for="{{ store['store_id'] }}_{{ code }}_ideal_partial_refund_status_id">{{ entry_partial_refund_status }}</label>
-										<div class="col-sm-10">
+										<div class="col-sm-4">
 											<select name="{{ store['store_id'] }}_{{ code }}_ideal_partial_refund_status_id" id="{{ store['store_id'] }}_{{ code }}_ideal_partial_refund_status_id" class="form-select">
 												{% for order_status in order_statuses %}
 													{% if order_status['order_status_id'] == store[code ~ '_ideal_partial_refund_status_id'] %}
@@ -322,6 +358,13 @@
 												{% endfor %}
 											</select>
 										</div>
+                                        <label class="col-sm-2 col-form-label">{{ entry_notify }}</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch form-switch-lg">
+                                            <input type="hidden" name="{{ store['store_id'] }}_{{ code }}_ideal_partial_refund_status_notify" value="0"/>
+                                            <input type="checkbox" name="{{ store['store_id'] }}_{{ code }}_ideal_partial_refund_status_notify" value="1" class="form-check-input" {% if store[code ~ '_ideal_partial_refund_status_notify'] %}checked{% endif %}/>
+                                            </div>
+                                        </div>
 									</div>
 								</div>
 

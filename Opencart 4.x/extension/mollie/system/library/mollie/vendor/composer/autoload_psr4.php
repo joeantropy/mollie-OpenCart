@@ -6,6 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    '_PhpScoperbbe44365fb20\\Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
     'Mollie\\Api\\' => array($baseDir . '/src'),
+    'MollieVendor\\Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
+    'MollieVendor\\Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
+    'MollieVendor\\Nyholm\\Psr7\\' => array($vendorDir . '/nyholm/psr7/src'),
+    'MollieVendor\\Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
 );
