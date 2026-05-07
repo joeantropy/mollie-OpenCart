@@ -60,6 +60,11 @@ $_['text_mollie_alma']              = $method_list_logo;
 $_['text_mollie_riverty']           = $method_list_logo;
 $_['text_mollie_payconiq']          = $method_list_logo;
 $_['text_mollie_satispay']          = $method_list_logo;
+$_['text_mollie_multibanco']        = $method_list_logo;
+$_['text_mollie_bizum']             = $method_list_logo;
+$_['text_mollie_mbway']             = $method_list_logo;
+$_['text_mollie_paybybank']         = $method_list_logo;
+$_['text_mollie_swish']             = $method_list_logo;
 
 // Heading
 $_['heading_title']           = "Mollie";
@@ -73,7 +78,7 @@ $_['title_mail']              = "Email";
 $_['name_mollie_banktransfer']   = "Bank transfer";
 $_['name_mollie_belfius']        = "Belfius Direct Net";
 $_['name_mollie_creditcard']     = "Creditcard";
-$_['name_mollie_ideal']          = "iDEAL";
+$_['name_mollie_ideal']          = "iDEAL | Wero";
 $_['name_mollie_kbc']            = "KBC/CBC Payment Button";
 $_['name_mollie_bancontact']     = "Bancontact";
 $_['name_mollie_paypal']         = "PayPal";
@@ -85,7 +90,7 @@ $_['name_mollie_klarnasliceit']  = 'Klarna Slice It';
 $_['name_mollie_przelewy24']  	 = 'P24';
 $_['name_mollie_applepay']  	 = 'Apple Pay';
 $_['name_mollie_voucher']        = "Voucher";
-$_['name_mollie_in3']            = "iDEAL in3";
+$_['name_mollie_in3']            = "iDEAL | Wero in3";
 $_['name_mollie_mybank']         = "MyBank";
 $_['name_mollie_billie']         = "Billie";
 $_['name_mollie_klarna']         = "Pay with Klarna";
@@ -97,6 +102,11 @@ $_['name_mollie_alma']           = "Alma";
 $_['name_mollie_riverty']        = "Riverty";
 $_['name_mollie_payconiq']       = "Payconiq";
 $_['name_mollie_satispay']       = "Satispay";
+$_['name_mollie_multibanco']     = "Multibanco";
+$_['name_mollie_bizum']          = "Bizum";
+$_['name_mollie_mbway']          = "MB Way";
+$_['name_mollie_paybybank']      = "Pay By Bank";
+$_['name_mollie_swish']          = "Swish";
 
 // Text
 $_['text_edit']                    = "Edit";
@@ -187,11 +197,11 @@ $_['entry_payment_fee_tax_class']    = "Payment Fee Tax Class";
 $_['entry_total']				     = "Total";
 $_['entry_minimum']				     = "Minimum";
 $_['entry_maximum']				     = "Maximum";
-$_['entry_api_to_use']  		     = "API to Use";
 $_['entry_payment_link']  		     = "Send Payment Link";
 $_['entry_payment_link_sep_email']   = "Send in a separate email";
 $_['entry_payment_link_ord_email']   = "Send in order confirmation email";
 $_['entry_partial_credit_order']     = 'Create credit order on (partial) refund';
+$_['entry_notify']                   = 'Notify Customer';
 
 // Help
 $_['help_view_profile']             = 'You can find your API key in <a href="https://www.mollie.com/dashboard/settings/profiles/" target="_blank" class="alert-link">your Mollie website profiles</a>.';
@@ -243,14 +253,14 @@ $_['entry_processing_status']        = "Payment successful status";
 $_['entry_refund_status']	         = "Payment refund status";
 $_['entry_partial_refund_status']	 = "Partial Refund Status";
 $_['entry_shipping_status']   		 = "Order shipped status";
-$_['entry_shipment']       			 = "Create shipment";
-$_['entry_create_shipment_status']   = "Create shipment after order status";
-$_['help_shipment'] 				 = "Shipment will be created right after creating order. Select 'No' to create shipment when order reach to a specific status and select the order status from below.";
+$_['entry_shipment']       			 = "Create capture";
+$_['entry_create_shipment_status']   = "Create capture after order status";
+$_['help_shipment'] 				 = "Capture will be created right after creating order. Select 'No' to create capture when order reach to a specific status and select the order status from below.";
 
-$_['text_create_shipment_automatically']            = "Create shipment automatically upon order creation";
-$_['text_create_shipment_on_status']                = "Create shipment upon setting order to this status";
-$_['text_create_shipment_on_order_complete']        = "Create shipment upon setting order to order complete status";
-$_['entry_create_shipment_on_order_complete'] 		= "Create shipment upon order complete";
+$_['text_create_shipment_automatically']            = "Create capture automatically upon order creation";
+$_['text_create_shipment_on_status']                = "Create capture upon setting order to this status";
+$_['text_create_shipment_on_order_complete']        = "Create capture upon setting order to order complete status";
+$_['entry_create_shipment_on_order_complete'] 		= "Create capture upon order complete";
 
 //Button
 $_['button_update']         = "Update";
@@ -265,4 +275,33 @@ $_['error_log_warning']	   = 'Warning: Your mollie log file %s is %s!';
 $_['button_download']	   = 'Download';
 
 // Summernote
-$_['summernote']                    = 'en-GB';
+$_['summernote']                    = 'en-gb';
+
+// sale/order
+$_['button_refund'] = 'Refund';
+$_['text_order_not_found'] = 'Mollie order details not found!';
+$_['text_no_refund'] = 'Refund cannot be processed!';
+$_['text_refunded_already'] = 'Refund has been processed already!';
+$_['text_refund_success']     = 'Refund has been processed successfully!';
+$_['text_confirm_refund']     = 'You are about to refund this payment, this cannot be undone. Are you sure you would like to continue?';
+$_['entry_amount']     = 'Amount';
+$_['button_partial_refund']     = 'Partial Refund';
+$_['error_refund_amount']       = 'Warning: Please enter a correct amount to refund!';
+$_['text_partial_refund_success']     = 'Partial refund of amount %s has been processed successfully!';
+$_['entry_partial_refund_type']     = 'Refund Type';
+$_['text_custom_amount']     = 'Custom Amount Refund';
+$_['text_productline']       = 'Productline Refund';
+$_['entry_productline']      = 'Productlines';
+$_['entry_quantity']         = 'Quantity';
+$_['help_quantity']          = 'Quantity to refund. Should not exceed the ordered quantity.';
+$_['error_productline']      = 'Warning: Please select a productline to refund!';
+$_['tab_mollie']             = 'Mollie';
+$_['text_mollie_payment']    = 'Payment(s)';
+$_['text_mollie_refund']     = 'Refund(s)';
+$_['column_date_added']      = 'Date Added';
+$_['column_payment_method']  = 'Payment Method';
+$_['column_amount']          = 'Amount';
+$_['column_status']          = 'Status';
+$_['button_payment_link']    = 'Send Payment Link';
+$_['column_stock_mutation']   = 'Stock Mutation';
+$_['help_stock_mutation']    = 'Select if you want to re-stock the credited products';

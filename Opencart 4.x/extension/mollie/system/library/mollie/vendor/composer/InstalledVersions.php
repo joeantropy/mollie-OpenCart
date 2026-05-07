@@ -9,10 +9,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace _PhpScoperbbe44365fb20\Composer;
+namespace MollieVendor\Composer;
 
-use _PhpScoperbbe44365fb20\Composer\Autoload\ClassLoader;
-use _PhpScoperbbe44365fb20\Composer\Semver\VersionParser;
+use MollieVendor\Composer\Autoload\ClassLoader;
+use MollieVendor\Composer\Semver\VersionParser;
 /**
  * This class is copied in every Composer installed project and available to all
  *
@@ -25,10 +25,19 @@ use _PhpScoperbbe44365fb20\Composer\Semver\VersionParser;
 class InstalledVersions
 {
     /**
+     * @var string|null if set (by reflection by Composer), this should be set to the path where this class is being copied to
+     * @internal
+     */
+    private static $selfDir = null;
+    /**
      * @var mixed[]|null
      * @psalm-var array{root: array{name: string, pretty_version: string, version: string, reference: string|null, type: string, install_path: string, aliases: string[], dev: bool}, versions: array<string, array{pretty_version?: string, version?: string, reference?: string|null, type?: string, install_path?: string, aliases?: string[], dev_requirement: bool, replaced?: string[], provided?: string[]}>}|array{}|null
      */
     private static $installed;
+    /**
+     * @var bool
+     */
+    private static $installedIsLocalDir;
     /**
      * @var bool|null
      */
@@ -104,7 +113,7 @@ class InstalledVersions
      * @param  string|null   $constraint  A version constraint to check for, if you pass one you have to make sure composer/semver is required by your package
      * @return bool
      */
-    public static function satisfies(\_PhpScoperbbe44365fb20\Composer\Semver\VersionParser $parser, $packageName, $constraint)
+    public static function satisfies(VersionParser $parser, $packageName, $constraint)
     {
         $constraint = $parser->parseConstraints((string) $constraint);
         $provided = $parser->parseConstraints(self::getVersionRanges($packageName));
@@ -269,6 +278,21 @@ class InstalledVersions
     {
         self::$installed = $data;
         self::$installedByVendor = array();
+        // when using reload, we disable the duplicate protection to ensure that self::$installed data is
+        // always returned, but we cannot know whether it comes from the installed.php in __DIR__ or not,
+        // so we have to assume it does not, and that may result in duplicate data being returned when listing
+        // all installed packages for example
+        self::$installedIsLocalDir = \false;
+    }
+    /**
+     * @return string
+     */
+    private static function getSelfDir()
+    {
+        if (self::$selfDir === null) {
+            self::$selfDir = \strtr(__DIR__, '\\', '/');
+        }
+        return self::$selfDir;
     }
     /**
      * @return array[]
@@ -277,20 +301,28 @@ class InstalledVersions
     private static function getInstalled()
     {
         if (null === self::$canGetVendors) {
-            self::$canGetVendors = \method_exists('_PhpScoperbbe44365fb20\\Composer\\Autoload\\ClassLoader', 'getRegisteredLoaders');
+            self::$canGetVendors = \method_exists('MollieVendor\\Composer\\Autoload\\ClassLoader', 'getRegisteredLoaders');
         }
         $installed = array();
+        $copiedLocalDir = \false;
         if (self::$canGetVendors) {
-            foreach (\_PhpScoperbbe44365fb20\Composer\Autoload\ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
+            $selfDir = self::getSelfDir();
+            foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
+                $vendorDir = \strtr($vendorDir, '\\', '/');
                 if (isset(self::$installedByVendor[$vendorDir])) {
                     $installed[] = self::$installedByVendor[$vendorDir];
                 } elseif (\is_file($vendorDir . '/composer/installed.php')) {
                     /** @var array{root: array{name: string, pretty_version: string, version: string, reference: string|null, type: string, install_path: string, aliases: string[], dev: bool}, versions: array<string, array{pretty_version?: string, version?: string, reference?: string|null, type?: string, install_path?: string, aliases?: string[], dev_requirement: bool, replaced?: string[], provided?: string[]}>} $required */
                     $required = (require $vendorDir . '/composer/installed.php');
-                    $installed[] = self::$installedByVendor[$vendorDir] = $required;
-                    if (null === self::$installed && \strtr($vendorDir . '/composer', '\\', '/') === \strtr(__DIR__, '\\', '/')) {
-                        self::$installed = $installed[\count($installed) - 1];
+                    self::$installedByVendor[$vendorDir] = $required;
+                    $installed[] = $required;
+                    if (self::$installed === null && $vendorDir . '/composer' === $selfDir) {
+                        self::$installed = $required;
+                        self::$installedIsLocalDir = \true;
                     }
+                }
+                if (self::$installedIsLocalDir && $vendorDir . '/composer' === $selfDir) {
+                    $copiedLocalDir = \true;
                 }
             }
         }
@@ -305,7 +337,7 @@ class InstalledVersions
                 self::$installed = array();
             }
         }
-        if (self::$installed !== array()) {
+        if (self::$installed !== array() && !$copiedLocalDir) {
             $installed[] = self::$installed;
         }
         return $installed;

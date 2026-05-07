@@ -2,13 +2,11 @@
 
 namespace Mollie\Api\Resources;
 
-class MethodCollection extends \Mollie\Api\Resources\BaseCollection
+class MethodCollection extends \Mollie\Api\Resources\ResourceCollection
 {
     /**
-     * @return string
+     * The name of the collection resource in Mollie's API.
      */
-    public function getCollectionResourceName()
-    {
-        return "methods";
-    }
+    public static string $collectionName = 'methods';
+    public static string $resource = \Mollie\Api\Resources\Method::class;
 }

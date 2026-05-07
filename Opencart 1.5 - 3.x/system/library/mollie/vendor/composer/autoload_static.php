@@ -9,7 +9,7 @@ class ComposerStaticInitd483f2f6604c341a377ca0a2e9857922
     public static $prefixLengthsPsr4 = array (
         '_' => 
         array (
-            '_PhpScoperbbe44365fb20\\Composer\\CaBundle\\' => 41,
+            '_PhpScoper4b378e8477c7\\Composer\\CaBundle\\' => 41,
         ),
         'M' => 
         array (
@@ -18,7 +18,7 @@ class ComposerStaticInitd483f2f6604c341a377ca0a2e9857922
     );
 
     public static $prefixDirsPsr4 = array (
-        '_PhpScoperbbe44365fb20\\Composer\\CaBundle\\' => 
+        '_PhpScoper4b378e8477c7\\Composer\\CaBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
@@ -34,6 +34,7 @@ class ComposerStaticInitd483f2f6604c341a377ca0a2e9857922
         'Mollie\\Api\\Endpoints\\BalanceEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/BalanceEndpoint.php',
         'Mollie\\Api\\Endpoints\\BalanceReportEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/BalanceReportEndpoint.php',
         'Mollie\\Api\\Endpoints\\BalanceTransactionEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/BalanceTransactionEndpoint.php',
+        'Mollie\\Api\\Endpoints\\CapabilityEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/CapabilityEndpoint.php',
         'Mollie\\Api\\Endpoints\\ChargebackEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/ChargebackEndpoint.php',
         'Mollie\\Api\\Endpoints\\ClientEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/ClientEndpoint.php',
         'Mollie\\Api\\Endpoints\\ClientLinkEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/ClientLinkEndpoint.php',
@@ -63,6 +64,7 @@ class ComposerStaticInitd483f2f6604c341a377ca0a2e9857922
         'Mollie\\Api\\Endpoints\\ProfileEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/ProfileEndpoint.php',
         'Mollie\\Api\\Endpoints\\ProfileMethodEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/ProfileMethodEndpoint.php',
         'Mollie\\Api\\Endpoints\\RefundEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/RefundEndpoint.php',
+        'Mollie\\Api\\Endpoints\\SalesInvoiceEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/SalesInvoiceEndpoint.php',
         'Mollie\\Api\\Endpoints\\SessionEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/SessionEndpoint.php',
         'Mollie\\Api\\Endpoints\\SettlementCaptureEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/SettlementCaptureEndpoint.php',
         'Mollie\\Api\\Endpoints\\SettlementChargebackEndpoint' => __DIR__ . '/../..' . '/src/Endpoints/SettlementChargebackEndpoint.php',
@@ -96,6 +98,8 @@ class ComposerStaticInitd483f2f6604c341a377ca0a2e9857922
         'Mollie\\Api\\Resources\\BalanceTransactionCollection' => __DIR__ . '/../..' . '/src/Resources/BalanceTransactionCollection.php',
         'Mollie\\Api\\Resources\\BaseCollection' => __DIR__ . '/../..' . '/src/Resources/BaseCollection.php',
         'Mollie\\Api\\Resources\\BaseResource' => __DIR__ . '/../..' . '/src/Resources/BaseResource.php',
+        'Mollie\\Api\\Resources\\Capability' => __DIR__ . '/../..' . '/src/Resources/Capability.php',
+        'Mollie\\Api\\Resources\\CapabilityCollection' => __DIR__ . '/../..' . '/src/Resources/CapabilityCollection.php',
         'Mollie\\Api\\Resources\\Capture' => __DIR__ . '/../..' . '/src/Resources/Capture.php',
         'Mollie\\Api\\Resources\\CaptureCollection' => __DIR__ . '/../..' . '/src/Resources/CaptureCollection.php',
         'Mollie\\Api\\Resources\\Chargeback' => __DIR__ . '/../..' . '/src/Resources/Chargeback.php',
@@ -140,6 +144,8 @@ class ComposerStaticInitd483f2f6604c341a377ca0a2e9857922
         'Mollie\\Api\\Resources\\ResourceFactory' => __DIR__ . '/../..' . '/src/Resources/ResourceFactory.php',
         'Mollie\\Api\\Resources\\Route' => __DIR__ . '/../..' . '/src/Resources/Route.php',
         'Mollie\\Api\\Resources\\RouteCollection' => __DIR__ . '/../..' . '/src/Resources/RouteCollection.php',
+        'Mollie\\Api\\Resources\\SalesInvoice' => __DIR__ . '/../..' . '/src/Resources/SalesInvoice.php',
+        'Mollie\\Api\\Resources\\SalesInvoiceCollection' => __DIR__ . '/../..' . '/src/Resources/SalesInvoiceCollection.php',
         'Mollie\\Api\\Resources\\Session' => __DIR__ . '/../..' . '/src/Resources/Session.php',
         'Mollie\\Api\\Resources\\SessionCollection' => __DIR__ . '/../..' . '/src/Resources/SessionCollection.php',
         'Mollie\\Api\\Resources\\Settlement' => __DIR__ . '/../..' . '/src/Resources/Settlement.php',
@@ -152,6 +158,7 @@ class ComposerStaticInitd483f2f6604c341a377ca0a2e9857922
         'Mollie\\Api\\Resources\\TerminalCollection' => __DIR__ . '/../..' . '/src/Resources/TerminalCollection.php',
         'Mollie\\Api\\Types\\ApprovalPrompt' => __DIR__ . '/../..' . '/src/Types/ApprovalPrompt.php',
         'Mollie\\Api\\Types\\BalanceTransferFrequency' => __DIR__ . '/../..' . '/src/Types/BalanceTransferFrequency.php',
+        'Mollie\\Api\\Types\\CapabilityStatus' => __DIR__ . '/../..' . '/src/Types/CapabilityStatus.php',
         'Mollie\\Api\\Types\\InvoiceStatus' => __DIR__ . '/../..' . '/src/Types/InvoiceStatus.php',
         'Mollie\\Api\\Types\\MandateMethod' => __DIR__ . '/../..' . '/src/Types/MandateMethod.php',
         'Mollie\\Api\\Types\\MandateStatus' => __DIR__ . '/../..' . '/src/Types/MandateStatus.php',
@@ -163,14 +170,16 @@ class ComposerStaticInitd483f2f6604c341a377ca0a2e9857922
         'Mollie\\Api\\Types\\PaymentMethod' => __DIR__ . '/../..' . '/src/Types/PaymentMethod.php',
         'Mollie\\Api\\Types\\PaymentMethodStatus' => __DIR__ . '/../..' . '/src/Types/PaymentMethodStatus.php',
         'Mollie\\Api\\Types\\PaymentStatus' => __DIR__ . '/../..' . '/src/Types/PaymentStatus.php',
+        'Mollie\\Api\\Types\\PaymentTerm' => __DIR__ . '/../..' . '/src/Types/PaymentTerm.php',
         'Mollie\\Api\\Types\\ProfileStatus' => __DIR__ . '/../..' . '/src/Types/ProfileStatus.php',
         'Mollie\\Api\\Types\\RefundStatus' => __DIR__ . '/../..' . '/src/Types/RefundStatus.php',
+        'Mollie\\Api\\Types\\SalesInvoiceStatus' => __DIR__ . '/../..' . '/src/Types/SalesInvoiceStatus.php',
         'Mollie\\Api\\Types\\SequenceType' => __DIR__ . '/../..' . '/src/Types/SequenceType.php',
         'Mollie\\Api\\Types\\SessionStatus' => __DIR__ . '/../..' . '/src/Types/SessionStatus.php',
         'Mollie\\Api\\Types\\SettlementStatus' => __DIR__ . '/../..' . '/src/Types/SettlementStatus.php',
         'Mollie\\Api\\Types\\SubscriptionStatus' => __DIR__ . '/../..' . '/src/Types/SubscriptionStatus.php',
         'Mollie\\Api\\Types\\TerminalStatus' => __DIR__ . '/../..' . '/src/Types/TerminalStatus.php',
-        '_PhpScoperbbe44365fb20\\Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
+        '_PhpScoper4b378e8477c7\\Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

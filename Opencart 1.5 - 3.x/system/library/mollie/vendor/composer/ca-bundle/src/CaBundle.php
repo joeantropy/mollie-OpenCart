@@ -8,10 +8,10 @@
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
  */
-namespace _PhpScoperbbe44365fb20\Composer\CaBundle;
+namespace _PhpScoper4b378e8477c7\Composer\CaBundle;
 
-use _PhpScoperbbe44365fb20\Psr\Log\LoggerInterface;
-use _PhpScoperbbe44365fb20\Symfony\Component\Process\PhpProcess;
+use _PhpScoper4b378e8477c7\Psr\Log\LoggerInterface;
+use _PhpScoper4b378e8477c7\Symfony\Component\Process\PhpProcess;
 /**
  * @author Chris Smith <chris@cs278.org>
  * @author Jordi Boggiano <j.boggiano@seld.be>
@@ -59,7 +59,7 @@ class CaBundle
      * @param  LoggerInterface $logger optional logger for information about which CA files were loaded
      * @return string          path to a CA bundle file or directory
      */
-    public static function getSystemCaRootBundlePath(?\_PhpScoperbbe44365fb20\Psr\Log\LoggerInterface $logger = null)
+    public static function getSystemCaRootBundlePath(?\_PhpScoper4b378e8477c7\Psr\Log\LoggerInterface $logger = null)
     {
         if (self::$caPath !== null) {
             return self::$caPath;
@@ -80,8 +80,6 @@ class CaBundle
             // Debian, Ubuntu, Gentoo, Arch Linux (ca-certificates package)
             '/etc/ssl/ca-bundle.pem',
             // SUSE, openSUSE (ca-certificates package)
-            '/usr/local/share/certs/ca-root-nss.crt',
-            // FreeBSD (ca_root_nss_package)
             '/usr/ssl/certs/ca-bundle.crt',
             // Cygwin
             '/opt/local/share/curl/curl-ca-bundle.crt',
@@ -92,8 +90,6 @@ class CaBundle
             // Really old RedHat?
             '/etc/ssl/cert.pem',
             // OpenBSD
-            '/usr/local/etc/ssl/cert.pem',
-            // FreeBSD 10.x
             '/usr/local/etc/openssl/cert.pem',
             // OS X homebrew, openssl package
             '/usr/local/etc/openssl@1.1/cert.pem',
@@ -101,10 +97,10 @@ class CaBundle
             '/opt/homebrew/etc/openssl@3/cert.pem',
             // macOS silicon homebrew, openssl@3 package
             '/opt/homebrew/etc/openssl@1.1/cert.pem',
+            // macOS silicon homebrew, openssl@1.1 package
+            '/etc/pki/tls/certs',
+            '/etc/ssl/certs',
         );
-        foreach ($otherLocations as $location) {
-            $otherLocations[] = \dirname($location);
-        }
         $caBundlePaths = \array_merge($caBundlePaths, $otherLocations);
         foreach ($caBundlePaths as $caBundle) {
             if ($caBundle && self::caFileUsable($caBundle, $logger)) {
@@ -150,7 +146,7 @@ class CaBundle
      *
      * @return bool
      */
-    public static function validateCaFile($filename, ?\_PhpScoperbbe44365fb20\Psr\Log\LoggerInterface $logger = null)
+    public static function validateCaFile($filename, ?\_PhpScoper4b378e8477c7\Psr\Log\LoggerInterface $logger = null)
     {
         static $warned = \false;
         if (isset(self::$caFileValidity[$filename])) {
@@ -213,7 +209,7 @@ class CaBundle
      * @param  LoggerInterface|null $logger
      * @return bool
      */
-    private static function caFileUsable($certFile, ?\_PhpScoperbbe44365fb20\Psr\Log\LoggerInterface $logger = null)
+    private static function caFileUsable($certFile, ?\_PhpScoper4b378e8477c7\Psr\Log\LoggerInterface $logger = null)
     {
         return $certFile && self::isFile($certFile, $logger) && self::isReadable($certFile, $logger) && self::validateCaFile($certFile, $logger);
     }
@@ -222,7 +218,7 @@ class CaBundle
      * @param  LoggerInterface|null $logger
      * @return bool
      */
-    private static function caDirUsable($certDir, ?\_PhpScoperbbe44365fb20\Psr\Log\LoggerInterface $logger = null)
+    private static function caDirUsable($certDir, ?\_PhpScoper4b378e8477c7\Psr\Log\LoggerInterface $logger = null)
     {
         return $certDir && self::isDir($certDir, $logger) && self::isReadable($certDir, $logger) && self::glob($certDir . '/*', $logger);
     }
@@ -231,7 +227,7 @@ class CaBundle
      * @param  LoggerInterface|null $logger
      * @return bool
      */
-    private static function isFile($certFile, ?\_PhpScoperbbe44365fb20\Psr\Log\LoggerInterface $logger = null)
+    private static function isFile($certFile, ?\_PhpScoper4b378e8477c7\Psr\Log\LoggerInterface $logger = null)
     {
         $isFile = @\is_file($certFile);
         if (!$isFile && $logger) {
@@ -244,7 +240,7 @@ class CaBundle
      * @param  LoggerInterface|null $logger
      * @return bool
      */
-    private static function isDir($certDir, ?\_PhpScoperbbe44365fb20\Psr\Log\LoggerInterface $logger = null)
+    private static function isDir($certDir, ?\_PhpScoper4b378e8477c7\Psr\Log\LoggerInterface $logger = null)
     {
         $isDir = @\is_dir($certDir);
         if (!$isDir && $logger) {
@@ -257,7 +253,7 @@ class CaBundle
      * @param  LoggerInterface|null $logger
      * @return bool
      */
-    private static function isReadable($certFileOrDir, ?\_PhpScoperbbe44365fb20\Psr\Log\LoggerInterface $logger = null)
+    private static function isReadable($certFileOrDir, ?\_PhpScoper4b378e8477c7\Psr\Log\LoggerInterface $logger = null)
     {
         $isReadable = @\is_readable($certFileOrDir);
         if (!$isReadable && $logger) {
@@ -270,7 +266,7 @@ class CaBundle
      * @param  LoggerInterface|null $logger
      * @return bool
      */
-    private static function glob($pattern, ?\_PhpScoperbbe44365fb20\Psr\Log\LoggerInterface $logger = null)
+    private static function glob($pattern, ?\_PhpScoper4b378e8477c7\Psr\Log\LoggerInterface $logger = null)
     {
         $certs = \glob($pattern);
         if ($certs === \false) {

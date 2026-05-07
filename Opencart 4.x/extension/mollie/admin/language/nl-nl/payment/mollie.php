@@ -60,6 +60,11 @@ $_['text_mollie_alma']           = $method_list_logo;
 $_['text_mollie_riverty']        = $method_list_logo;
 $_['text_mollie_payconiq']       = $method_list_logo;
 $_['text_mollie_satispay']       = $method_list_logo;
+$_['text_mollie_multibanco']     = $method_list_logo;
+$_['text_mollie_bizum']          = $method_list_logo;
+$_['text_mollie_mbway']          = $method_list_logo;
+$_['text_mollie_paybybank']      = $method_list_logo;
+$_['text_mollie_swish']          = $method_list_logo;
 
 // Heading
 $_['heading_title']         = "Mollie";
@@ -73,7 +78,7 @@ $_['title_mail']            = "E-mail";
 $_['name_mollie_banktransfer']   = "Overboeking";
 $_['name_mollie_belfius']        = "Belfius Direct Net";
 $_['name_mollie_creditcard']     = "Creditcard";
-$_['name_mollie_ideal']          = "iDEAL";
+$_['name_mollie_ideal']          = "iDEAL | Wero";
 $_['name_mollie_kbc']            = "KBC/CBC-Betaalknop";
 $_['name_mollie_bancontact']     = "Bancontact";
 $_['name_mollie_paypal']         = "PayPal";
@@ -85,7 +90,7 @@ $_['name_mollie_klarnasliceit']  = 'Klarna Betaal in 3 delen';
 $_['name_mollie_przelewy_24']  	 = 'P24';
 $_['name_mollie_applepay']  	 = 'Apple Pay';
 $_['name_mollie_voucher']        = "Voucher";
-$_['name_mollie_in_3']           = "iDEAL in3";
+$_['name_mollie_in_3']           = "iDEAL | Wero in3";
 $_['name_mollie_mybank']         = "MyBank";
 $_['name_mollie_billie']         = "Billie";
 $_['name_mollie_klarna']         = "Pay with Klarna";
@@ -97,6 +102,11 @@ $_['name_mollie_alma']           = "Alma";
 $_['name_mollie_riverty']        = "Riverty";
 $_['name_mollie_payconiq']       = "Payconiq";
 $_['name_mollie_satispay']       = "Satispay";
+$_['name_mollie_multibanco']     = "Multibanco";
+$_['name_mollie_bizum']          = "Bizum";
+$_['name_mollie_mbway']          = "MB Way";
+$_['name_mollie_paybybank']      = "Betalen via bank";
+$_['name_mollie_swish']          = "Swish";
 
 // Text
 $_['text_edit']                    = "Bewerk Mollie";
@@ -186,11 +196,11 @@ $_['entry_payment_fee_tax_class']    = "Payment Fee Tax Class";
 $_['entry_total']				     = "Totaal";
 $_['entry_minimum']				     = "Minimum";
 $_['entry_maximum']				     = "Maximaal";
-$_['entry_api_to_use']  		     = "API om te gebruiken";
 $_['entry_payment_link']  		     = "Betaallink verzenden";
 $_['entry_payment_link_sep_email']   = "Stuur een aparte e-mail";
 $_['entry_payment_link_ord_email']   = "E-mail met orderbevestiging verzenden";
 $_['entry_partial_credit_order']     = 'Kredietbestelling aanmaken bij (gedeeltelijke) restitutie';
+$_['entry_notify']                   = 'Klant op de hoogte brengen';
 
 // Help
 $_['help_view_profile']             = 'U kunt uw API-sleutel vinden bij <a href="https://www.mollie.com/dashboard/settings/profiles/" target="_blank" class="alert-link">uw Mollie-websiteprofielen</a>.';
@@ -244,14 +254,14 @@ $_['entry_processing_status']         = "Status betaling succesvol";
 $_['entry_refund_status']	          = "Status betaling terugbetaling";
 $_['entry_partial_refund_status']	  = "Gedeeltelijke terugbetalingsstatus";
 $_['entry_shipping_status']           = "Status bestelling verzonden";
-$_['entry_shipment']       			  = "Maak verzending";
-$_['entry_create_shipment_status']    = "Maak verzending aan na order status";
-$_['help_shipment'] 				  = "Verzending wordt direct na het maken van de bestelling gemaakt. Selecteer 'Nee' om een ​​zending te creëren wanneer de order een specifieke status bereikt en selecteer de bestelstatus van onder.";
+$_['entry_shipment']       			  = "Maak vastlegging";
+$_['entry_create_shipment_status']    = "Maak vastlegging aan na order status";
+$_['help_shipment'] 				  = "Vastlegging wordt direct na het maken van de bestelling gemaakt. Selecteer 'Nee' om een ​​zending te creëren wanneer de order een specifieke status bereikt en selecteer de bestelstatus van onder.";
 
 $_['text_create_shipment_automatically']            = "Maak automatisch een zending bij het maken van de bestelling";
-$_['text_create_shipment_on_status']                = "Maak verzending bij het plaatsen van de bestelling naar deze status";
-$_['text_create_shipment_on_order_complete']        = "Maak verzending bij het plaatsen van bestelling om de volledige status te bestellen";
-$_['entry_create_shipment_on_order_complete'] 		= "Maak verzending bij bestelling compleet";
+$_['text_create_shipment_on_status']                = "Maak vastlegging bij het plaatsen van de bestelling naar deze status";
+$_['text_create_shipment_on_order_complete']        = "Maak vastlegging bij het plaatsen van bestelling om de volledige status te bestellen";
+$_['entry_create_shipment_on_order_complete'] 		= "Maak vastlegging bij bestelling compleet";
 
 //Button
 $_['button_update']         = "Bijwerken";

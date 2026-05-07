@@ -6,6 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    '_PhpScoperbbe44365fb20\\Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
+    '_PhpScoper4b378e8477c7\\Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
     'Mollie\\Api\\' => array($baseDir . '/src'),
 );

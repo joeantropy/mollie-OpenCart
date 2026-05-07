@@ -107,7 +107,7 @@ $_['refund_cancelled']      = 'Refusion er blevet annulleret.';
 $_['refund_success']        = 'Refusion er blevet behandlet med succes!';
 
 // Methods
-$_['method_ideal']          = 'iDEAL';
+$_['method_ideal']          = 'iDEAL | Wero';
 $_['method_creditcard']     = 'Kreditkort';
 $_['method_bancontact']     = 'Bancontact';
 $_['method_banktransfer']   = 'Bankoverførsel';
@@ -122,7 +122,7 @@ $_['method_klarnasliceit']  = 'Klarna skær det';
 $_['method_przelewy24']     = 'P24';
 $_['method_applepay']       = 'Apple Pay';
 $_['method_voucher']        = 'Voucher';
-$_['method_in3']            = 'iDEAL in3';
+$_['method_in3']            = 'iDEAL | Wero in3';
 $_['method_mybank']         = 'MyBank';
 $_['method_billie']         = 'Billie';
 $_['method_klarna']         = 'Betal med Klarna';
@@ -134,6 +134,11 @@ $_['method_alma']           = 'Alma';
 $_['method_riverty']        = 'Riverty';
 $_['method_payconiq']       = 'Payconiq';
 $_['method_satispay']       = 'Satispay';
+$_['method_multibanco']     = "Multibanco";
+$_['method_bizum']          = "Bizum";
+$_['method_mbway']          = "MB Way";
+$_['method_paybybank']      = "Betal via bank";
+$_['method_swish']          = "Swish";
 
 //Round Off Description
 $_['roundoff_description'] = 'Afrundingsforskel på grund af valutaomregning';

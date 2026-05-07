@@ -6,17 +6,11 @@ namespace Mollie\Api\Resources;
 class BalanceTransactionCollection extends \Mollie\Api\Resources\CursorCollection
 {
     /**
-     * @inheritDoc
+     * The name of the collection resource in Mollie's API.
      */
-    public function getCollectionResourceName()
-    {
-        return "balance_transactions";
-    }
+    public static string $collectionName = 'balance_transactions';
     /**
-     * @inheritDoc
+     * Resource class name.
      */
-    protected function createResourceObject()
-    {
-        return new \Mollie\Api\Resources\BalanceTransaction($this->client);
-    }
+    public static string $resource = \Mollie\Api\Resources\BalanceTransaction::class;
 }

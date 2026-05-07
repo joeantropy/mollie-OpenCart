@@ -3,6 +3,9 @@
 namespace Mollie\Api\Resources;
 
 use Mollie\Api\Types\ApprovalPrompt;
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class ClientLink extends \Mollie\Api\Resources\BaseResource
 {
     /**
@@ -13,6 +16,7 @@ class ClientLink extends \Mollie\Api\Resources\BaseResource
      * Id of the client link.
      *
      * @example csr_vZCnNQsV2UtfXxYifWKWH
+     *
      * @var string
      */
     public $id;
@@ -25,11 +29,11 @@ class ClientLink extends \Mollie\Api\Resources\BaseResource
     /**
      * Get the redirect URL where the customer can complete the payment.
      *
-     * @return string|null
+     * @return string
      */
-    public function getRedirectUrl(string $client_id, string $state, array $scopes = [], string $approval_prompt = \Mollie\Api\Types\ApprovalPrompt::AUTO)
+    public function getRedirectUrl(string $client_id, string $state, array $scopes = [], string $approval_prompt = ApprovalPrompt::AUTO) : string
     {
-        if (!\in_array($approval_prompt, [\Mollie\Api\Types\ApprovalPrompt::AUTO, \Mollie\Api\Types\ApprovalPrompt::FORCE])) {
+        if (!\in_array($approval_prompt, [ApprovalPrompt::AUTO, ApprovalPrompt::FORCE])) {
             throw new \Exception('Invalid approval_prompt. Please use "auto" or "force".');
         }
         $query = \http_build_query(['client_id' => $client_id, 'state' => $state, 'approval_prompt' => $approval_prompt, 'scope' => \implode(' ', $scopes)], '', '&', \PHP_QUERY_RFC3986);

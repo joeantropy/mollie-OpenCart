@@ -34,7 +34,7 @@ them ready-made into your OpenCart webshop with this powerful plugin.
 - PayPal
 - SEPA Direct Debits
 - SEPA Bank Transfer
-- iDeal
+- iDeal | Wero
 - Bancontact
 - KBC/CBC Payment Button
 - Belfius Payment Button
@@ -106,3 +106,8 @@ Contact Mollie: [www.mollie.com/nl/about](https://www.mollie.com/nl/about) — i
 + [More info on Riverty Pay via Mollie](https://www.mollie.com/en/payments/riverty/)
 + [More info on Payconiq Pay via Mollie](https://www.mollie.com/en/payments/payconiq/)
 + [More info on Satispay Pay via Mollie](https://www.mollie.com/en/payments/satispay/)
++ [More info on Multibanco via Mollie](https://www.mollie.com/en/payments/multibanco/)
++ [More info on Bizum via Mollie](https://www.mollie.com/en/payments/bizum/)
++ [More info on MB Way via Mollie](https://www.mollie.com/en/payments/mb-way/)
++ [More info on Pay By Bank via Mollie](https://www.mollie.com/en/payments/pay-by-bank/)
++ [More info on Swish via Mollie](https://www.mollie.com/en/payments/swish/)

@@ -60,6 +60,11 @@ $_['text_mollie_alma']           = $method_list_logo;
 $_['text_mollie_riverty']        = $method_list_logo;
 $_['text_mollie_payconiq']       = $method_list_logo;
 $_['text_mollie_satispay']       = $method_list_logo;
+$_['text_mollie_multibanco']     = $method_list_logo;
+$_['text_mollie_bizum']          = $method_list_logo;
+$_['text_mollie_mbway']          = $method_list_logo;
+$_['text_mollie_paybybank']      = $method_list_logo;
+$_['text_mollie_swish']          = $method_list_logo;
 
 // Heading
 $_['heading_title']           = "Mollie";
@@ -74,7 +79,7 @@ $_['name_mollie_bancontact']     = "Bancontact";
 $_['name_mollie_banktransfer']   = "Virement bancaire";
 $_['name_mollie_belfius']        = "Belfius Direct Net";
 $_['name_mollie_creditcard']     = "Creditcard";
-$_['name_mollie_ideal']          = "iDEAL";
+$_['name_mollie_ideal']          = "iDEAL | Wero";
 $_['name_mollie_kbc']            = "Bouton de paiement KBC/CBC";
 $_['name_mollie_paypal']         = "PayPal";
 $_['name_mollie_giftcard']       = 'Giftcard';
@@ -85,7 +90,7 @@ $_['name_mollie_klarnasliceit']  = 'Klarna Slice It';
 $_['name_mollie_przelewy_24']  	 = 'P24';
 $_['name_mollie_applepay']  	 = 'Apple Pay';
 $_['name_mollie_voucher']        = "Voucher";
-$_['name_mollie_in_3']           = "iDEAL in3";
+$_['name_mollie_in_3']           = "iDEAL | Wero in3";
 $_['name_mollie_mybank']         = "MyBank";
 $_['name_mollie_billie']         = "Billie";
 $_['name_mollie_klarna']         = "Pay with Klarna";
@@ -97,6 +102,11 @@ $_['name_mollie_alma']           = "Alma";
 $_['name_mollie_riverty']        = "Riverty";
 $_['name_mollie_payconiq']       = "Payconiq";
 $_['name_mollie_satispay']       = "Satispay";
+$_['name_mollie_multibanco']     = "Multibanco";
+$_['name_mollie_bizum']          = "Bizum";
+$_['name_mollie_mbway']          = "MB Way";
+$_['name_mollie_paybybank']      = "Paiement par virement bancaire";
+$_['name_mollie_swish']          = "Swish";
 
 // Text
 $_['text_edit']                     = "Éditer Mollie";
@@ -186,11 +196,11 @@ $_['entry_payment_fee_tax_class']    = "Payment Fee Tax Class";
 $_['entry_total']				     = "Le total";
 $_['entry_minimum']				     = "Le minimum";
 $_['entry_maximum']				     = "Maximum";
-$_['entry_api_to_use']  		     = "API à utiliser";
 $_['entry_payment_link']  		     = "Envoyer le lien de paiement";
 $_['entry_payment_link_sep_email']   = "Envoyer dans un e-mail séparé";
 $_['entry_payment_link_ord_email']   = "Envoyer un e-mail de confirmation de commande";
 $_['entry_partial_credit_order']     = 'Créer une commande de crédit sur remboursement (partiel)';
+$_['entry_notify']                   = 'Informer le client';
 
 // Help
 $_['help_view_profile']             = 'Vous pouvez trouver votre clé API dans <a href="https://www.mollie.com/dashboard/settings/profiles/" target="_blank" class="alert-link">vos profils de site à Mollie</a>.';
@@ -244,12 +254,12 @@ $_['entry_processing_status']         = "État de paiement traitement";
 $_['entry_refund_status']	          = "État de paiement rembourser";
 $_['entry_partial_refund_status']	  = "Statut de remboursement partiel";
 $_['entry_shipping_status']           = "Statut de la commande expédiée";
-$_['entry_shipment']       			  = "Créer un envoi";
-$_['entry_create_shipment_status']    = "Créer un envoi après le statut de la commande";
-$_['help_shipment'] 				  = "Envoi sera créé juste après la création de la commande. Sélectionnez «Non» pour créer une expédition lorsque la commande atteint un statut spécifique et sélectionnez le statut de la commande ci-dessous.";
+$_['entry_shipment']       			  = "Créer un capturer";
+$_['entry_create_shipment_status']    = "Créer un capturer après le statut de la commande";
+$_['help_shipment'] 				  = "Capturer sera créé juste après la création de la commande. Sélectionnez «Non» pour créer une expédition lorsque la commande atteint un statut spécifique et sélectionnez le statut de la commande ci-dessous.";
 
-$_['text_create_shipment_automatically']            = "Créer automatiquement l'envoi lors de la création de la commande";
-$_['text_create_shipment_on_status']                = "Créer un envoi lors du réglage de la commande à ce statut";
+$_['text_create_shipment_automatically']            = "Créer automatiquement l'capturer lors de la création de la commande";
+$_['text_create_shipment_on_status']                = "Créer un capturer lors du réglage de la commande à ce statut";
 $_['text_create_shipment_on_order_complete']        = "Créer une expédition lors du paramétrage de la commande pour passer à la commande";
 $_['entry_create_shipment_on_order_complete'] 		= "Créer une expédition à la fin de la commande";
 

@@ -4,12 +4,12 @@ use Mollie\Api\MollieApiClient;
 
 class MollieHelper {
 
-	const PLUGIN_VERSION = "13.4.2";
+	const PLUGIN_VERSION = "14.0.0";
 
 	const OUTH_URL = 'https://api.mollie.com/oauth2';
 
 	const MIN_PHP_VERSION = "7.2.0";
-	const NEXT_PHP_VERSION = "7.2.0";
+	const NEXT_PHP_VERSION = "8.2.0";
 
 	// All available modules. These should correspond to the Mollie_API_Object_Method constants.
 	const MODULE_NAME_BANKTRANSFER  	= "banktransfer";
@@ -39,6 +39,11 @@ class MollieHelper {
 	const MODULE_NAME_RIVERTY	 	    = "riverty";
 	const MODULE_NAME_PAYCONIQ	 	    = "payconiq";
 	const MODULE_NAME_SATISPAY	 	    = "satispay";
+	const MODULE_NAME_MULTIBANCO   	 	= "multibanco";
+	const MODULE_NAME_BIZUM   	 	    = "bizum";
+	const MODULE_NAME_MBWAY   	 	    = "mbway";
+	const MODULE_NAME_PAYBYBANK	 	    = "paybybank";
+	const MODULE_NAME_SWISH 	 	    = "swish";
 
 
 	// List of all available module names.
@@ -69,7 +74,12 @@ class MollieHelper {
 		self::MODULE_NAME_ALMA,
 		self::MODULE_NAME_RIVERTY,
 		self::MODULE_NAME_PAYCONIQ,
-		self::MODULE_NAME_SATISPAY
+		self::MODULE_NAME_SATISPAY,
+		self::MODULE_NAME_MULTIBANCO,
+		self::MODULE_NAME_BIZUM,
+		self::MODULE_NAME_MBWAY,
+		self::MODULE_NAME_PAYBYBANK,
+		self::MODULE_NAME_SWISH
 	);
 
 	protected $api_client;
@@ -121,15 +131,19 @@ class MollieHelper {
 	 */
 	public function getAPIClientAdmin ($config)
 	{
-		require_once(DIR_SYSTEM . "/library/mollie/vendor/autoload.php");
-		$mollie = new MollieApiClient;
+        if (isset($config[$this->getModuleCode() . '_api_key']) && !empty($config[$this->getModuleCode() . '_api_key'])) {
+            require_once(DIR_SYSTEM . "/library/mollie/vendor/autoload.php");
+            $mollie = new MollieApiClient;
 
-		$mollie->setApiKey(isset($config[$this->getModuleCode() . '_api_key']) ? $config[$this->getModuleCode() . '_api_key'] : null);
+            $mollie->setApiKey(isset($config[$this->getModuleCode() . '_api_key']) ? $config[$this->getModuleCode() . '_api_key'] : null);
 
-		$mollie->addVersionString("OpenCart/" . VERSION);
-		$mollie->addVersionString("MollieOpenCart/" . self::PLUGIN_VERSION);
+            $mollie->addVersionString("OpenCart/" . VERSION);
+            $mollie->addVersionString("MollieOpenCart/" . self::PLUGIN_VERSION);
 
-		return $mollie;
+            return $mollie;
+        }
+
+        return false;
 	}
 
 	public function getAPIClientForKey($key = null)

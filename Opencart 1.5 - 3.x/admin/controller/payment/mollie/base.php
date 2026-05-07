@@ -65,6 +65,8 @@ use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Exceptions\IncompatiblePlatform;
 use Mollie\Api\MollieApiClient;
 use Mollie\mollieHttpClient;
+use Mollie\Api\Http\Requests\CreatePaymentRefundRequest;
+use Mollie\Api\Http\Data\Money;
 
 require_once(DIR_SYSTEM . "library/mollie/helper.php");
 require_once(DIR_SYSTEM . "/library/mollie/mollieHttpClient.php");
@@ -137,7 +139,6 @@ class ControllerPaymentMollieBase extends Controller {
 		$this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "mollie_payments` (
 			`order_id` INT(11) NOT NULL,
 			`method` VARCHAR(32) NOT NULL,
-			`mollie_order_id` VARCHAR(32) NOT NULL,
 			`transaction_id` VARCHAR(32),
 			`bank_account` VARCHAR(15),
 			`bank_status` VARCHAR(20),
@@ -148,8 +149,7 @@ class ControllerPaymentMollieBase extends Controller {
 			`subscription_end` DATETIME,
 			`date_modified` DATETIME NOT NULL,
 			`payment_attempt` INT(11) NOT NULL,
-			PRIMARY KEY (`mollie_order_id`),
-			UNIQUE KEY `mollie_order_id` (`mollie_order_id`)
+			PRIMARY KEY (`transaction_id`)
 		) DEFAULT CHARSET=utf8");
 
 		// Create mollie customers table
@@ -206,10 +206,6 @@ class ControllerPaymentMollieBase extends Controller {
 		if(!$this->db->query("SHOW COLUMNS FROM `" . DB_PREFIX . "mollie_payments` LIKE 'subscription_id'")->row)
 			$this->db->query("ALTER TABLE `" . DB_PREFIX . "mollie_payments` ADD `subscription_id` VARCHAR(32), ADD `order_recurring_id` INT(11), ADD `next_payment` DATETIME, ADD `subscription_end` DATETIME");
 
-		//Check if mollie_order_id field exists
-		if(!$this->db->query("SHOW COLUMNS FROM `" . DB_PREFIX . "mollie_payments` LIKE 'mollie_order_id'")->row)
-			$this->db->query("ALTER TABLE `" . DB_PREFIX . "mollie_payments` ADD `mollie_order_id` VARCHAR(32) UNIQUE");
-
 		//Check if refund_id field exists
 		if(!$this->db->query("SHOW COLUMNS FROM `" . DB_PREFIX . "mollie_payments` LIKE 'refund_id'")->row)
 			$this->db->query("ALTER TABLE `" . DB_PREFIX . "mollie_payments` ADD `refund_id` VARCHAR(32)");
@@ -229,21 +225,6 @@ class ControllerPaymentMollieBase extends Controller {
 		//Check if status fields exist
 		if(!$this->db->query("SHOW COLUMNS FROM `" . DB_PREFIX . "mollie_refund` LIKE 'status'")->row)
 			$this->db->query("ALTER TABLE `" . DB_PREFIX . "mollie_refund` ADD `status` VARCHAR(20)");
-
-		// Update primary key
-		// $query = $this->db->query("SHOW INDEX FROM `" .DB_PREFIX. "mollie_payments` where Key_name = 'PRIMARY'");
-		// if($query->num_rows > 0 && $query->row['Column_name'] != 'mollie_order_id') {
-		// 	$this->db->query("DELETE FROM `" .DB_PREFIX. "mollie_payments` where mollie_order_id IS NULL OR mollie_order_id = ''");
-		// 	$this->db->query("ALTER TABLE `" .DB_PREFIX. "mollie_payments` DROP PRIMARY KEY, ADD PRIMARY KEY (mollie_order_id)");
-		// }
-
-		// Update Primary Key
-		$query = $this->db->query("SHOW INDEX FROM `" .DB_PREFIX. "mollie_payments` where Key_name = 'PRIMARY'");
-		if($query->num_rows > 0) {
-			$this->db->query("ALTER TABLE `" .DB_PREFIX. "mollie_payments` DROP PRIMARY KEY, ADD PRIMARY KEY (mollie_order_id, transaction_id)");
-		} else {
-			$this->db->query("ALTER TABLE `" .DB_PREFIX. "mollie_payments` ADD PRIMARY KEY (mollie_order_id, transaction_id)");
-		}
 
 		// Drop Unique Key
 		$query = $this->db->query("SHOW INDEX FROM `" .DB_PREFIX. "mollie_payments`");
@@ -269,7 +250,7 @@ class ControllerPaymentMollieBase extends Controller {
 		$query = $this->db->query("SELECT * FROM `" .DB_PREFIX. "mollie_payments`");
 		if ($query->num_rows) {
 			foreach ($query->rows as $row) {
-				if (!$row['transaction_id']) {
+				if (!$row['transaction_id'] && isset($row['mollie_order_id'])) {
 					$rand_string = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )), 1, 10);
 
 					$this->db->query("UPDATE `" .DB_PREFIX. "mollie_payments` SET transaction_id = '" . $rand_string . "' WHERE order_id = '" . $row['order_id'] . "' AND mollie_order_id = '" . $row['mollie_order_id'] . "'");
@@ -889,7 +870,6 @@ class ControllerPaymentMollieBase extends Controller {
         	$paymentGeoZone[] 	= $code . '_' . $module_name . '_geo_zone';
         	$paymentTotalMin[]  = $code . '_' . $module_name . '_total_minimum';
         	$paymentTotalMax[]  = $code . '_' . $module_name . '_total_maximum';
-        	$paymentAPIToUse[]  = $code . '_' . $module_name . '_api_to_use';
 		}
 
         $data['stores'] = $this->getStores();
@@ -1002,6 +982,11 @@ class ControllerPaymentMollieBase extends Controller {
         $data['name_mollie_riverty'] 						= $this->language->get('name_mollie_riverty');
         $data['name_mollie_payconiq'] 						= $this->language->get('name_mollie_payconiq');
         $data['name_mollie_satispay'] 						= $this->language->get('name_mollie_satispay');
+        $data['name_mollie_multibanco'] 						    = $this->language->get('name_mollie_multibanco');
+        $data['name_mollie_bizum'] 						    = $this->language->get('name_mollie_bizum');
+        $data['name_mollie_mbway'] 						    = $this->language->get('name_mollie_mbway');
+        $data['name_mollie_paybybank'] 						= $this->language->get('name_mollie_paybybank');
+        $data['name_mollie_swish'] 						    = $this->language->get('name_mollie_swish');
 
 		$data['entry_payment_method'] 						= $this->language->get('entry_payment_method');
 		$data['entry_activate'] 							= $this->language->get('entry_activate');
@@ -1051,12 +1036,12 @@ class ControllerPaymentMollieBase extends Controller {
 		$data['entry_total'] 								= $this->language->get('entry_total');
 		$data['entry_minimum'] 								= $this->language->get('entry_minimum');
 		$data['entry_maximum'] 								= $this->language->get('entry_maximum');
-		$data['entry_api_to_use'] 							= $this->language->get('entry_api_to_use');
 		$data['entry_status'] 								= $this->language->get('entry_status');
 		$data['entry_payment_link'] 						= $this->language->get('entry_payment_link');
 		$data['entry_payment_link_sep_email'] 				= $this->language->get('entry_payment_link_sep_email');
 		$data['entry_payment_link_ord_email'] 				= $this->language->get('entry_payment_link_ord_email');
 		$data['entry_partial_credit_order'] 				= $this->language->get('entry_partial_credit_order');
+		$data['entry_notify'] 				                = $this->language->get('entry_notify');
 
 		$data['error_order_expiry_days'] 					= $this->language->get('error_order_expiry_days');
 
@@ -1185,14 +1170,22 @@ class ControllerPaymentMollieBase extends Controller {
 			$code . "_align_icons"                 				=> 'left',
 			$code . "_show_order_canceled_page"   				=> FALSE,
 			$code . "_ideal_pending_status_id"    				=> 1,
+			$code . "_ideal_pending_status_notify"    			=> FALSE,
 			$code . "_ideal_processing_status_id" 				=> 2,
+			$code . "_ideal_processing_status_notify" 			=> TRUE,
 			$code . "_ideal_canceled_status_id"   				=> 7,
+			$code . "_ideal_canceled_status_notify"   			=> FALSE,
 			$code . "_ideal_failed_status_id"     				=> 10,
+			$code . "_ideal_failed_status_notify"     			=> TRUE,
 			$code . "_ideal_expired_status_id"    				=> 14,
+			$code . "_ideal_expired_status_notify"    			=> FALSE,
 			$code . "_ideal_shipping_status_id"   				=> 3,
+			$code . "_ideal_shipping_status_notify"   			=> FALSE,
 			$code . "_create_shipment_status_id"  				=> 3,
 			$code . "_ideal_refund_status_id"  					=> 11,
+			$code . "_ideal_refund_status_notify"  				=> FALSE,
 			$code . "_ideal_partial_refund_status_id"  			=> 11,
+			$code . "_ideal_partial_refund_status_notify"  		=> FALSE,
 			$code . "_create_shipment"  		  				=> 3,
 			$code . "_payment_screen_language"  		  		=> 'en-gb',
 			$code . "_default_currency"  		  				=> 'DEF',
@@ -1256,16 +1249,18 @@ class ControllerPaymentMollieBase extends Controller {
 			// Check which payment methods we can use with the current API key.
 			$allowed_methods = array();
 			try {
-				$api_methods = $this->getAPIClient($store['store_id'])->methods->allAvailable();
-				foreach ($api_methods as $api_method) {
-					if ($api_method->status == 'activated') {
-						$allowed_methods[$api_method->id] = array(
-							"method" => $api_method->id,
-							"minimumAmount" => $api_method->minimumAmount,
-							"maximumAmount" => $api_method->maximumAmount
-						);
-					}
-				}
+                if ($this->getAPIClient($store['store_id'])) {
+                    $api_methods = $this->getAPIClient($store['store_id'])->methods->allAvailable();
+                    foreach ($api_methods as $api_method) {
+                        if ($api_method->status == 'activated') {
+                            $allowed_methods[$api_method->id] = array(
+                                "method" => $api_method->id,
+                                "minimumAmount" => $api_method->minimumAmount,
+                                "maximumAmount" => $api_method->maximumAmount
+                            );
+                        }
+                    }
+                }
 			} catch (Mollie\Api\Exceptions\ApiException $e) {
 				// If we have an unauthorized request, our API key is likely invalid.
 				if ($store[$code . '_api_key'] !== NULL && strpos($e->getMessage(), "Unauthorized request") !== false)
@@ -1374,12 +1369,6 @@ class ControllerPaymentMollieBase extends Controller {
 						}
 					}
 				}	
-				
-				if (isset($this->data[$store['store_id'] . '_' . $code . '_' . $module_name . '_api_to_use'])) {
-					$payment_method['api_to_use'] = $this->data[$store['store_id'] . '_' . $code . '_' . $module_name . '_api_to_use'];
-				} else {
-					$payment_method['api_to_use'] = isset($this->data[$code . "_" . $module_name . "_api_to_use"]) ? $this->data[$code . "_" . $module_name . "_api_to_use"] : null;
-				}
 
 				$data['store_data'][$store['store_id'] . '_' . $code . '_payment_methods'][$module_name] = $payment_method;
 			}
@@ -1987,4 +1976,394 @@ class ControllerPaymentMollieBase extends Controller {
 			}
 		}
 	}
+
+    protected function convertCurrency($amount, $currency) {
+        $this->load->model("localisation/currency");
+
+        $currencies = $this->model_localisation_currency->getCurrencies();
+        $convertedAmount = $amount * $currencies[$currency]['value'];
+
+        return $convertedAmount;
+    }
+
+    public function refund() {
+        if (version_compare(VERSION, '2.3', '>=')) {
+	      $this->load->language('extension/payment/mollie_ideal');
+	    } else {
+	      $this->load->language('payment/mollie_ideal');
+	    }
+        $this->load->model('payment/mollie');
+        $this->load->model('sale/order');
+
+        $json = array();
+        $json['error'] = false;
+
+        $log = new Log('Mollie.log');
+
+        $moduleCode = $this->mollieHelper->getModuleCode();
+        
+        $order_id = $this->request->get['order_id'];
+        $order = $this->model_sale_order->getOrder($order_id);
+
+        $molliePaymentDetails = $this->model_payment_mollie->getMolliePayment($order_id);
+        if(!$molliePaymentDetails) {
+            $log->write("Mollie payment(mollie_payment_id) not found for order_id - $order_id");
+            $json['error'] = $this->language->get('text_order_not_found');
+        }
+
+        if($molliePaymentDetails['refund_id']) {
+            $log->write("Refund has been processed already for order_id - $order_id");
+            $json['error'] = $this->language->get('text_refunded_already');
+        }
+
+        if(!$json['error']) {
+            $json['partial_credit_order'] = false;
+
+            $stock_mutation_data = array();
+
+            $order_products = $this->model_sale_order->getOrderProducts($order_id);
+
+            foreach ($order_products as $order_product) {
+                $stock_mutation_data[] = array(
+                    "order_product_id" => $order_product['order_product_id'],
+                    "quantity" => (int)$order_product['quantity']
+                );
+            }
+
+            if (!empty($molliePaymentDetails['transaction_id'])) {
+                $molliePayment = $this->getAPIClient($order['store_id'])->payments->get($molliePaymentDetails['transaction_id']);
+                if($molliePayment->isPaid() && $molliePayment->canBeRefunded()) {
+                    $amount = $this->numberFormat($this->convertCurrency($order['total'], $order['currency_code']), $order['currency_code']);
+
+                    $refundObject = $molliePayment->refund([
+                        "amount" => ["currency" => $order['currency_code'], "value" => (string)$amount],
+                        "metadata" => array("order_id" => $order_id, "transaction_id" => $molliePaymentDetails['transaction_id'])
+                    ]);
+
+                    if($refundObject->id) {
+                        $log->write("Refund has been processed for order_id - $order_id, transaction_id - " . $molliePaymentDetails['transaction_id'] . ". Refund id is $refundObject->id.");
+                        $json['success'] = $this->language->get('text_refund_success');
+                        $json['order_status_id'] = $this->config->get($moduleCode . "_ideal_refund_status_id");
+                        $json['comment'] = $this->language->get('text_refund_success');
+
+                        $json['date'] = date($this->language->get('date_format_short'));
+                        $json['amount'] = $this->currency->format($refundObject->amount->value, $refundObject->amount->currency, 1);
+                        $json['status'] = ucfirst($refundObject->status);
+
+                        $this->model_payment_mollie->updateMolliePaymentForPaymentAPI($molliePaymentDetails['transaction_id'], $refundObject->id, 'refunded');
+
+                        $data = array(
+                            "refund_id" => $refundObject->id,
+                            "order_id" => $order_id,
+                            "transaction_id" => $molliePaymentDetails['transaction_id'],
+                            "amount" => $refundObject->amount->value,
+                            "currency_code" => $refundObject->amount->currency,
+                            "status" => $refundObject->status
+                        );
+                        $this->model_payment_mollie->addMollieRefund($data);
+
+                    } else {
+                        $log->write("Refund process can not be processed for order_id - $order_id.");
+                        $json['error'] = $this->language->get('text_no_refund');
+                    }
+                } else {
+                    $log->write("Refund can not be processed for order_id - $order_id.");
+                    $json['error'] = $this->language->get('text_no_refund');
+                }
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function partialRefund() {
+        if (version_compare(VERSION, '2.3', '>=')) {
+	      $this->load->language('extension/payment/mollie_ideal');
+	    } else {
+	      $this->load->language('payment/mollie_ideal');
+	    }
+        $this->load->model('payment/mollie');
+        $this->load->model('sale/order');
+
+        $json = array();
+        $json['error'] = false;
+
+        $log = new Log('Mollie.log');
+
+        $moduleCode = $this->mollieHelper->getModuleCode();
+        
+        $order_id = $this->request->get['order_id'];
+        $order = $this->model_sale_order->getOrder($order_id);
+
+        $molliePaymentDetails = $this->model_payment_mollie->getMolliePayment($order_id);
+        if(!$molliePaymentDetails) {
+            $log->write("Mollie order(mollie_payment_id) not found for order_id - $order_id");
+            $json['error'] = $this->language->get('text_order_not_found');
+        }
+
+        if($molliePaymentDetails['refund_id']) {
+            $log->write("Refund has been processed already for order_id - $order_id");
+            $json['error'] = $this->language->get('text_refunded_already');
+        }
+
+        if ((empty($this->request->post['refund_amount']) || ($this->request->post['refund_amount'] <= 0)) && ($this->request->post['partial_refund_type'] == 'custom_amount')) {
+            $json['error'] = $this->language->get('error_refund_amount');
+        }
+
+        if (!isset($this->request->post['productline']) && ($this->request->post['partial_refund_type'] == 'productline')) {
+            $json['error'] = $this->language->get('error_productline');
+        }
+
+        $productline_error = true;
+        if (isset($this->request->post['productline'])) {
+            foreach ($this->request->post['productline'] as $order_product_id => $line) {
+                if (isset($line['selected'])) {
+                    $productline_error = false;
+                    break;
+                }
+            }
+        }
+
+        if ($productline_error && ($this->request->post['partial_refund_type'] == 'productline')) {
+            $json['error'] = $this->language->get('error_productline');
+        }
+
+        if(!$json['error']) {
+            $json['partial_credit_order'] = false;
+
+            $order_products = $this->model_sale_order->getOrderProducts($order_id);
+
+            if ($this->request->post['partial_refund_type'] == 'productline') {
+                $lines = array();
+                $orderProductIDs = array();
+                $stock_mutation_data = array();
+                foreach ($this->request->post['productline'] as $order_product_id => $line) {
+                    if (isset($line['selected'])) {
+                        $lines[] = array(
+                            "order_product_id" => $order_product_id,
+                            "quantity" => (int)$line['quantity']
+                        );
+
+                        $orderProductIDs[] = $order_product_id;
+                    }
+
+                    if (isset($line['stock_mutation'])) {
+                        $stock_mutation_data[] = array(
+                            "order_product_id" => $order_product_id,
+                            "quantity" => (int)$line['quantity']
+                        );
+                    }
+                }
+                if (!empty($lines)) {
+                    if (!empty($molliePaymentDetails['transaction_id'])) {
+                        try {
+                            $amount = 0;
+                            foreach ($order_products as $product) {
+                                if (in_array($product['order_product_id'], $orderProductIDs)) {
+                                    $amount += $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order['currency_code'], false, false);
+                                }
+                            }
+
+                            $molliePayment = $this->getAPIClient($order['store_id'])->payments->get($molliePaymentDetails['transaction_id']);
+                            
+                            $refundObject = $molliePayment->refund([
+                                "amount" => ["currency" => $order['currency_code'], "value" => (string)$amount],
+                                "metadata" => array("order_id" => $order_id, "order_product_id" => json_encode($lines), "transaction_id" => $molliePaymentDetails['transaction_id'])
+                            ]);
+
+                            if ($this->config->get($moduleCode . "_partial_credit_order")) {
+                                $json['partial_credit_order'] = true;
+                            } else {
+                                if (!empty($stock_mutation_data)) {
+                                    $this->model_payment_mollie->stockMutation($order_id, $stock_mutation_data);
+                                }
+                            }
+                        } catch (\Mollie\Api\Exceptions\ApiException $e) {
+                            $log->write("Creating refund failed: " . htmlspecialchars($e->getMessage()));
+                            $json['error'] = $this->language->get('text_no_refund');
+                        }
+                    }
+                }
+            } elseif($this->request->post['partial_refund_type'] == 'custom_amount') {
+                try {
+                    $molliePayment = $this->getAPIClient($order['store_id'])->payments->get($molliePaymentDetails['transaction_id']);
+
+                    $amount = $this->numberFormat($this->request->post['refund_amount'], $order['currency_code']);
+                            
+                    $refundObject = $molliePayment->refund([
+                        "amount" => ["currency" => $order['currency_code'], "value" => (string)$amount],
+                        "metadata" => array("order_id" => $order_id, "transaction_id" => $molliePaymentDetails['transaction_id'])
+                    ]);
+                } catch (\Mollie\Api\Exceptions\ApiException $e) {
+                    $log->write("Creating refund failed: " . htmlspecialchars($e->getMessage()));
+                    $json['error'] = $this->language->get('text_no_refund');
+                }
+            }
+            
+            if (!$json['error']) {
+                if($refundObject->id) {
+                    $amount = $refundObject->amount->value .' '. $refundObject->amount->currency;
+                    $log->write('Partial refund of amount ' . $amount . ' has been processed for order_id - ' . $order_id . ' and transaction_id - ' . $molliePaymentDetails['transaction_id'] . '. Refund id is ' . $refundObject->id);
+                    $json['success'] = $this->language->get('text_refund_success');
+                    $json['order_status_id'] = $this->config->get($moduleCode . "_ideal_partial_refund_status_id");
+                    $json['comment'] = sprintf($this->language->get('text_partial_refund_success'), $amount);
+
+                    $json['date'] = date($this->language->get('date_format_short'));
+                    $json['amount'] = $this->currency->format($refundObject->amount->value, $refundObject->amount->currency, 1);
+                    $json['status'] = ucfirst($refundObject->status);
+
+                    $data = array(
+                        "refund_id" => $refundObject->id,
+                        "order_id" => $order_id,
+                        "transaction_id" => $molliePaymentDetails['transaction_id'],
+                        "amount" => $refundObject->amount->value,
+                        "currency_code" => $refundObject->amount->currency,
+                        "status" => $refundObject->status
+                    );
+                    $this->model_payment_mollie->addMollieRefund($data);
+
+                } else {
+                    $log->write('Partial Refund can not be processed for order_id - ' . $order_id . ' and transaction_id - ' . $molliePaymentDetails['transaction_id']);
+                    $json['error'] = $this->language->get('text_no_refund');
+                }
+            }
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function creditOrder() {
+        $this->load->model('payment/mollie');
+        $this->load->model('sale/order');
+
+        $json = array();
+        $no_stock_mutation = array();
+
+        if (isset($this->request->get['order_id'])) {
+            $order_id = $this->request->get['order_id'];
+        } else {
+            $order_id = 0;
+        }
+
+        $order_info = $this->model_sale_order->getOrder($order_id);
+        if ($order_info) {
+            $creditData = $order_info;
+
+            $creditData['products'] = array();
+
+            $credit_product = array();
+
+            if (isset($this->request->post['productline']) && !empty($this->request->post['productline'])) {
+                foreach ($this->request->post['productline'] as $order_product_id => $line) {
+                    if (isset($line['selected'])) {
+                        $credit_product[$order_product_id] = array(
+                            "order_product_id" => $order_product_id,
+                            "quantity" => $line['quantity']
+                        );
+                    }
+
+                    if (!isset($line['stock_mutation'])) {
+                        $no_stock_mutation[] = $order_product_id;
+                    }
+                }
+            }
+
+            $order_sub_total = 0;
+            $order_tax = 0;
+            $order_total = 0;
+
+            $order_products = $this->model_sale_order->getOrderProducts($order_id);
+            foreach ($order_products as $product) {
+                if (!empty($credit_product)) {
+                    if (array_key_exists($product['order_product_id'], $credit_product)) {
+                        $quantity = $credit_product[$product['order_product_id']]['quantity'];
+                        $price = $product['price'];
+                        $tax = $product['tax'];
+
+                        $order_sub_total += $price * $quantity;
+                        $order_tax += $tax * $quantity;
+
+                        $stock_mutation = true;
+                        if (in_array($product['order_product_id'], $no_stock_mutation)) {
+                            $stock_mutation = false;
+                        }
+
+                        $creditData['products'][] = array(
+                            'product_id' => $product['product_id'],
+                            'name'       => $product['name'],
+                            'model'      => $product['model'],
+                            'option'     => $this->model_sale_order->getOrderOptions($order_id, $product['order_product_id']),
+                            'quantity'   => -$quantity,
+                            'price'      => $price,
+                            'total'      => -($price * $quantity),
+                            'tax'        => $tax,
+                            'stock_mutation' => $stock_mutation,
+                            'reward'     => -$product['reward']
+                        );
+                    }
+                } else {
+                    $quantity = $product['quantity'];
+                    $price = $product['price'];
+                    $tax = $product['tax'];
+
+                    $order_sub_total += $price * $quantity;
+                    $order_tax += $tax * $quantity;
+
+                    $stock_mutation = true;
+
+                    $creditData['products'][] = array(
+                        'product_id' => $product['product_id'],
+                        'name'       => $product['name'],
+                        'model'      => $product['model'],
+                        'option'     => $this->model_sale_order->getOrderOptions($order_id, $product['order_product_id']),
+                        'quantity'   => -$quantity,
+                        'price'      => $price,
+                        'total'      => -($price * $quantity),
+                        'tax'        => $tax,
+                        'stock_mutation' => $stock_mutation,
+                        'reward'     => -$product['reward']
+                    );
+                }
+            }
+
+            $order_total = $order_sub_total + $order_tax;
+
+            $creditData['total'] = -$order_total;
+
+            $creditData['order_total'] = array();
+            $order_totals = $this->model_sale_order->getOrderTotals($order_id);
+            foreach ($order_totals as $_order_total) {
+                if ($_order_total['code'] == 'sub_total') {
+                    $creditData['order_total'][] = array(
+                        "code" => $_order_total['code'],
+                        "title" => $_order_total['title'],
+                        "value" => -$order_sub_total,
+                        "sort_order" => $_order_total['sort_order']
+                    );
+                } elseif ($_order_total['code'] == 'tax') {
+                    $creditData['order_total'][] = array(
+                        "code" => $_order_total['code'],
+                        "title" => $_order_total['title'],
+                        "value" => -$order_tax,
+                        "sort_order" => $_order_total['sort_order']
+                    );
+                } elseif ($_order_total['code'] == 'total') {
+                    $creditData['order_total'][] = array(
+                        "code" => $_order_total['code'],
+                        "title" => $_order_total['title'],
+                        "value" => -$order_total,
+                        "sort_order" => $_order_total['sort_order']
+                    );
+                }
+            }
+
+            $credit_order_id = $this->model_sale_order->addOrder($creditData);
+
+            $json['success'] = true;
+        }
+
+        $this->response->setOutput(json_encode($json));
+    }
 }

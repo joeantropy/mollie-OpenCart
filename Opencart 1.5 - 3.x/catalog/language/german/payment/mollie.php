@@ -107,7 +107,7 @@ $_['refund_cancelled']   = 'Die Rückerstattung wurde storniert.';
 $_['refund_success'] 	 = 'Rückerstattung wurde erfolgreich bearbeitet!';
 
 // Methods
-$_['method_ideal']          = 'iDEAL';
+$_['method_ideal']          = 'iDEAL | Wero';
 $_['method_creditcard']     = 'Creditcard';
 $_['method_mistercash']     = 'Bancontact';
 $_['method_banktransfer']   = 'Übertragung';
@@ -122,7 +122,7 @@ $_['method_klarnasliceit']  = 'Klarna Slice It';
 $_['method_przelewy24']     = 'P24';
 $_['method_applepay']    	= 'Apple Pay';
 $_['method_voucher']    	= 'Voucher';
-$_['method_in3']    	    = 'iDEAL in3';
+$_['method_in3']    	    = 'iDEAL | Wero in3';
 $_['method_mybank']         = 'MyBank';
 $_['method_billie']         = 'Billie';
 $_['method_klarna']         = 'Bezahlen Sie mit Klarna';
@@ -134,6 +134,11 @@ $_['method_alma']           = 'Alma';
 $_['method_riverty']        = 'Riverty';
 $_['method_payconiq']       = 'Payconiq';
 $_['method_satispay']       = 'Satispay';
+$_['method_multibanco']     = "Multibanco";
+$_['method_bizum']          = "Bizum";
+$_['method_mbway']          = "MB Way";
+$_['method_paybybank']      = "Zahlung per Bank";
+$_['method_swish']          = "Swish";
 
 //Round Off Description
 $_['roundoff_description']  = 'Rundungsdifferenzen aufgrund von Währungsumrechnungen';

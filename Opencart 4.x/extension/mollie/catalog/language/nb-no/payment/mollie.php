@@ -32,7 +32,7 @@
  */
 
 /**
- * English language file for iDEAL by Mollie
+ * Norwegian language file for iDEAL | Wero by Mollie
  */
 
 // Text
@@ -41,6 +41,7 @@ $_['ideal_title']                       = 'Din betaling';
 $_['text_title']                        = 'Betal online';
 $_['text_redirected']                   = 'Klienten har blitt henvist til betalingsskjermen';
 $_['text_issuer_giftcard']              = 'Velg gavekortet ditt';
+$_['text_issuer_ideal']                 = 'Velg din bank';
 $_['text_issuer_kbc']                   = 'Velg betalingsknappen.';
 $_['text_issuer_voucher']               = 'Velg merkevaren din.';
 $_['text_card_details']                 = 'Vennligst skriv inn kredittkortopplysningene dine.';
@@ -59,12 +60,14 @@ $_['text_payment_link_full_title']	    = 'Mollie betalingslenke - Hele beløpet'
 $_['text_payment_link_open_title']	    = 'Mollie betalingslenke - Åpent beløp';
 $_['text_cancelled']                    = 'Gjentakende betaling er kansellert';
 $_['text_subscription_cancel_confirm']  = 'Vil du si opp abonnementet?';
+$_['text_mollie_open_payment'] 			= 'Det er fortsatt en åpen betaling på <strong>%s</strong> for denne ordren.';
 
 // Button
 $_['button_retry']  = 'Gå tilbake til betalingssiden';
 $_['button_report'] = 'Rapporter feil';
 $_['button_submit'] = 'Send inn';
 $_['button_subscription_cancel'] = 'Avbryt abonnement';
+$_['button_mollie_pay_now']    = 'Betal nå';
 
 // Entry
 $_['entry_card_holder'] = 'Kortinnehavers navn';
@@ -107,7 +110,7 @@ $_['refund_cancelled']      = 'Refusjon har blitt kansellert.';
 $_['refund_success']        = 'Refusjon har blitt behandlet vellykket!';
 
 // Methods
-$_['method_ideal']          = 'iDEAL';
+$_['method_ideal']          = 'iDEAL | Wero';
 $_['method_creditcard']     = 'Creditcard';
 $_['method_bancontact']     = 'Bancontact';
 $_['method_banktransfer']   = 'Bankoverføring';
@@ -122,7 +125,7 @@ $_['method_klarnasliceit']  = 'Klarna Slice It';
 $_['method_przelewy24']  	= 'P24';
 $_['method_applepay']    	= 'Apple Pay';
 $_['method_voucher']    	= 'Voucher';
-$_['method_in3']    	    = 'iDEAL in3';
+$_['method_in3']    	    = 'iDEAL | Wero in3';
 $_['method_mybank']         = 'MyBank';
 $_['method_billie']         = 'Billie';
 $_['method_klarna']         = 'Betal med Klarna';
@@ -134,6 +137,11 @@ $_['method_alma']           = 'Alma';
 $_['method_riverty']        = 'Riverty';
 $_['method_payconiq']       = 'Payconiq';
 $_['method_satispay']       = 'Satispay';
+$_['method_multibanco']     = "Multibanco";
+$_['method_bizum']          = "Bizum";
+$_['method_mbway']          = "MB Way";
+$_['method_paybybank']      = "Betal med bank";
+$_['method_swish']          = "Swish";
 
 //Round Off Description
 $_['roundoff_description'] = 'Avrundingsforskjell på grunn av valutakonvertering';

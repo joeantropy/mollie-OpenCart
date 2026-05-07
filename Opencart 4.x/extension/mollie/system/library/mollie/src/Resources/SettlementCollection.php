@@ -5,17 +5,11 @@ namespace Mollie\Api\Resources;
 class SettlementCollection extends \Mollie\Api\Resources\CursorCollection
 {
     /**
-     * @return string
+     * The name of the collection resource in Mollie's API.
      */
-    public function getCollectionResourceName()
-    {
-        return "settlements";
-    }
+    public static string $collectionName = 'settlements';
     /**
-     * @return BaseResource
+     * Resource class name.
      */
-    protected function createResourceObject()
-    {
-        return new \Mollie\Api\Resources\Settlement($this->client);
-    }
+    public static string $resource = \Mollie\Api\Resources\Settlement::class;
 }

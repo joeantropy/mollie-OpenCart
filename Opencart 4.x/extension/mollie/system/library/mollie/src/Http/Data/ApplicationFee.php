@@ -1,0 +1,19 @@
+<?php
+
+namespace Mollie\Api\Http\Data;
+
+use Mollie\Api\Contracts\Resolvable;
+class ApplicationFee implements Resolvable
+{
+    public \Mollie\Api\Http\Data\Money $amount;
+    public string $description;
+    public function __construct(\Mollie\Api\Http\Data\Money $amount, string $description)
+    {
+        $this->amount = $amount;
+        $this->description = $description;
+    }
+    public function toArray() : array
+    {
+        return ['amount' => $this->amount, 'description' => $this->description];
+    }
+}

@@ -41,6 +41,7 @@ $_['ideal_title']                       = 'Il tuo pagamento';
 $_['text_title']                        = 'Paga online';
 $_['text_redirected']                   = 'Il cliente è stato indirizzato alla schermata di pagamento';
 $_['text_issuer_giftcard']              = 'Seleziona la tua carta regalo';
+$_['text_issuer_ideal']                 = 'Seleziona la tua banca';
 $_['text_issuer_kbc']                   = 'Seleziona il tuo pulsante di pagamento.';
 $_['text_issuer_voucher']               = 'Seleziona il tuo marchio.';
 $_['text_card_details']                 = 'Inserisci i dettagli della tua carta di credito.';
@@ -59,12 +60,14 @@ $_['text_payment_link_full_title']	    = 'Collegamento di pagamento Mollie - Imp
 $_['text_payment_link_open_title']	    = 'Collegamento di pagamento Mollie - Importo aperto';
 $_['text_cancelled']                    = 'Il pagamento ricorrente è stato annullato';
 $_['text_subscription_cancel_confirm']  = 'Vuoi annullare l\'abbonamento?';
+$_['text_mollie_open_payment'] 			= 'C\'è ancora un pagamento in sospeso di <strong>%s</strong> per questo ordine.';
 
 // Button
 $_['button_retry']  = 'Torna alla pagina di pagamento';
 $_['button_report'] = 'Segnala errore';
 $_['button_submit'] = 'Invia';
 $_['button_subscription_cancel'] = 'Annulla abbonamento';
+$_['button_mollie_pay_now']    = 'Paga ora';
 
 // Entry
 $_['entry_card_holder'] = 'Nome titolare della carta';
@@ -107,7 +110,7 @@ $_['refund_cancelled']      = 'Il rimborso è stato annullato.';
 $_['refund_success']        = 'Il rimborso è stato elaborato con successo!';
 
 // Methods
-$_['method_ideal']          = 'iDEAL';
+$_['method_ideal']          = 'iDEAL | Wero';
 $_['method_creditcard']     = 'Carta di credito';
 $_['method_bancontact']     = 'Contatto ban';
 $_['method_banktransfer']   = 'Trasferimento bancario';
@@ -122,7 +125,7 @@ $_['method_klarnasliceit']  = 'Klarna affettalo';
 $_['method_przelewy24']     = 'P24';
 $_['method_applepay']       = 'Apple Pay';
 $_['method_voucher']        = 'Buono';
-$_['method_in3']            = 'iDEAL in3';
+$_['method_in3']            = 'iDEAL | Wero in3';
 $_['method_mybank']         = 'MyBank';
 $_['method_billie']         = 'Billie';
 $_['method_klarna']         = 'Paga con Klarna';
@@ -134,6 +137,11 @@ $_['method_alma']           = 'Alma';
 $_['method_riverty']        = 'Riverty';
 $_['method_payconiq']       = 'Payconiq';
 $_['method_satispay']       = 'Satispay';
+$_['method_multibanco']     = "Multibanco";
+$_['method_bizum']          = "Bizum";
+$_['method_mbway']          = "MB Way";
+$_['method_paybybank']      = "Paga tramite banca";
+$_['method_swish']          = "Swish";
 
 //Round Off Description
 $_['roundoff_description'] = 'Differenza di arrotondamento dovuta alla conversione di valuta';
