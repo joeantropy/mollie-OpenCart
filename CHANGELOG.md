@@ -2,6 +2,14 @@
 
 # Changelog #
 
+#### Changes in release 14.0.0
+  + New payment methods (Bizum, MB Way, Multibanco, Pay By Bank and Swish)
+  + Notify customer option for order status update
+  + Order API is removed
+  + Added capture
+  + Mollie API Upgrade
+  + Bugfixes and improvements
+
 #### Changes in release 13.4.2
   + Missing callback column error fix
 
