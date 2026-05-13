@@ -1382,7 +1382,7 @@ class ControllerPaymentMollieBase extends Controller
             // Create subscriptions if any
             $this->createSubscription($order, $paymentDetails);
 
-            if (($paymentDetails->isPaid() || $paymentDetails->isAuthorized())) {
+            if ($paymentDetails->isPaid() || $paymentDetails->isAuthorized() || $paymentDetails->isPending()) {
                 $success_redirect = true;
             }
         }

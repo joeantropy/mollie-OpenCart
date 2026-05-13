@@ -1093,6 +1093,8 @@ class ControllerPaymentMollieBase extends Controller {
 		$data['token']          	= $this->token;
 
 		$data['update_url']         = ($this->getUpdateUrl()) ? $this->getUpdateUrl()['updateUrl'] : '';
+        $data['text_update'] = '';
+
 		if (version_compare(phpversion(), MollieHelper::MIN_PHP_VERSION, "<")) {
         	$data['error_min_php_version'] = sprintf($this->language->get('error_min_php_version'), MollieHelper::MIN_PHP_VERSION);
 		} else {
@@ -1100,17 +1102,17 @@ class ControllerPaymentMollieBase extends Controller {
 		}
 
 		if ($this->getUpdateUrl()) {
-			if (version_compare(phpversion(), MollieHelper::NEXT_PHP_VERSION, "<")) {
+			if (version_compare(phpversion(), MollieHelper::NEXT_PHP_VERSION, "<") && ((int)$this->getUpdateUrl()['updateVersion'] > (int)MOLLIE_VERSION)) {
 				$data['text_update'] = sprintf($this->language->get('text_update_message_warning'), $this->getUpdateUrl()['updateVersion'], MollieHelper::NEXT_PHP_VERSION, $this->getUpdateUrl()['updateVersion']);
 				$data['module_update'] = false;
 			} else {
 				$data['text_update'] = sprintf($this->language->get('text_update_message'), $this->getUpdateUrl()['updateVersion'], $data['update_url'], $this->getUpdateUrl()['updateVersion']);
 				$data['module_update'] = true;
 			}
-		}
 
-		if (isset($_COOKIE["hide_mollie_update_message_version"]) && ($_COOKIE["hide_mollie_update_message_version"] == $this->getUpdateUrl()['updateVersion'])) {
-			$data['text_update'] = '';
+            if (isset($_COOKIE["hide_mollie_update_message_version"]) && ($_COOKIE["hide_mollie_update_message_version"] == $this->getUpdateUrl()['updateVersion'])) {
+                $data['text_update'] = '';
+            }
 		}
 		
 		$data['geo_zones']			= $this->model_localisation_geo_zone->getGeoZones();
@@ -1609,9 +1611,8 @@ class ControllerPaymentMollieBase extends Controller {
     }
 
     public function update() {
-
 		// Check for PHP version
-		if (version_compare(phpversion(), MollieHelper::NEXT_PHP_VERSION, "<")) {
+        if (!$this->getUpdateUrl() || (version_compare(phpversion(), MollieHelper::NEXT_PHP_VERSION, "<") && ((int)$this->getUpdateUrl()['updateVersion'] > (int)MOLLIE_VERSION))) {
 			if (version_compare(VERSION, '2.3', '>=')) {
 				$this->response->redirect($this->url->link('extension/payment/mollie_' . static::MODULE_NAME, $this->token, true));
 			} elseif (version_compare(VERSION, '2', '>=')) {
@@ -1696,6 +1697,35 @@ class ControllerPaymentMollieBase extends Controller {
         }
 
         //cleanup
+        if (is_file(DIR_SYSTEM.'../vqmod/xml/mollie.xml_') || is_file(DIR_SYSTEM.'../system/mollie.ocmod.xml_')) {
+            if (is_file(DIR_SYSTEM.'../system/mollie.ocmod.xml_')) {
+                if (file_exists(DIR_SYSTEM.'../system/mollie.ocmod.xml')) {
+                    unlink(DIR_SYSTEM.'../system/mollie.ocmod.xml');
+                }
+
+                rename(DIR_SYSTEM.'../system/mollie.ocmod.xml_', DIR_SYSTEM.'../system/mollie.ocmod.xml');
+            }
+
+            if (is_file(DIR_SYSTEM.'../vqmod/xml/mollie.xml_')) {
+                if (file_exists(DIR_SYSTEM.'../vqmod/xml/mollie.xml')) {
+                    unlink(DIR_SYSTEM.'../vqmod/xml/mollie.xml');
+                }
+
+                rename(DIR_SYSTEM.'../vqmod/xml/mollie.xml_', DIR_SYSTEM.'../vqmod/xml/mollie.xml');
+            }
+			
+			// Delete the modification files to avoid errors
+			if (version_compare(VERSION, '2.0', '>=')) {
+				if (is_dir(DIR_MODIFICATION . 'admin')) {
+					$this->delTree(DIR_MODIFICATION . 'admin');
+				}
+			}		
+			// Delete mods.cache
+			if (is_file(DIR_SYSTEM.'../vqmod/mods.cache')) {
+				unlink(DIR_SYSTEM.'../vqmod/mods.cache');
+			}
+		}
+
         unlink($temp_file);
         $this->rmDirRecursive($temp_dir);
 
@@ -2037,13 +2067,14 @@ class ControllerPaymentMollieBase extends Controller {
 
                     $refundObject = $molliePayment->refund([
                         "amount" => ["currency" => $order['currency_code'], "value" => (string)$amount],
-                        "metadata" => array("order_id" => $order_id, "transaction_id" => $molliePaymentDetails['transaction_id'])
+                        "metadata" => array("order_id" => $order_id, "order_product_id" => json_encode($stock_mutation_data), "transaction_id" => $molliePaymentDetails['transaction_id'])
                     ]);
 
                     if($refundObject->id) {
                         $log->write("Refund has been processed for order_id - $order_id, transaction_id - " . $molliePaymentDetails['transaction_id'] . ". Refund id is $refundObject->id.");
                         $json['success'] = $this->language->get('text_refund_success');
                         $json['order_status_id'] = $this->config->get($moduleCode . "_ideal_refund_status_id");
+                        $json['notify_customer'] = ($this->config->get($moduleCode . "_ideal_refund_status_notify")) ? true : false;
                         $json['comment'] = $this->language->get('text_refund_success');
 
                         $json['date'] = date($this->language->get('date_format_short'));
@@ -2207,6 +2238,7 @@ class ControllerPaymentMollieBase extends Controller {
                     $log->write('Partial refund of amount ' . $amount . ' has been processed for order_id - ' . $order_id . ' and transaction_id - ' . $molliePaymentDetails['transaction_id'] . '. Refund id is ' . $refundObject->id);
                     $json['success'] = $this->language->get('text_refund_success');
                     $json['order_status_id'] = $this->config->get($moduleCode . "_ideal_partial_refund_status_id");
+                    $json['notify_customer'] = ($this->config->get($moduleCode . "_ideal_partial_refund_status_notify")) ? true : false;
                     $json['comment'] = sprintf($this->language->get('text_partial_refund_success'), $amount);
 
                     $json['date'] = date($this->language->get('date_format_short'));

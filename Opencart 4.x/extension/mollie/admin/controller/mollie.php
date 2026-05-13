@@ -711,8 +711,9 @@ class Mollie extends \Opencart\System\Engine\Controller {
 
 		$update_url_data = $this->getUpdateUrl();
 		$data['update_url'] = $update_url_data ? $update_url_data['updateUrl'] : '';
+        $data['text_update'] = '';
 
-		if (version_compare(phpversion(), \MollieHelper::MIN_PHP_VERSION, "<")) {
+		if (version_compare(phpversion(), \MollieHelper::NEXT_PHP_VERSION, "<") && ((int)$update_url_data['updateVersion'] > (int)MOLLIE_VERSION)) {
         	$data['text_update'] = $update_url_data ? sprintf($this->language->get('text_update_message_warning'), \MollieHelper::NEXT_PHP_VERSION, $update_url_data['updateVersion'], $update_url_data['updateVersion']) : '';
 			$data['module_update'] = false;
 		} else {
@@ -720,10 +721,12 @@ class Mollie extends \Opencart\System\Engine\Controller {
 			$data['module_update'] = true;
 		}
 
-		$cookie_version = $_COOKIE["hide_mollie_update_message_version"] ?? '';
-		if ($update_url_data && $cookie_version == $update_url_data['updateVersion']) {
-			$data['text_update'] = '';
-		}
+        if ($update_url_data) {
+            $cookie_version = $_COOKIE["hide_mollie_update_message_version"] ?? '';
+            if ($update_url_data && $cookie_version == $update_url_data['updateVersion']) {
+                $data['text_update'] = '';
+            }
+        }
 		
 		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
@@ -1171,7 +1174,7 @@ class Mollie extends \Opencart\System\Engine\Controller {
 	}
 
     public function update(): void {
-		if (version_compare(phpversion(), \MollieHelper::MIN_PHP_VERSION, "<")) {
+        if (!$this->getUpdateUrl() || (version_compare(phpversion(), \MollieHelper::NEXT_PHP_VERSION, "<") && ((int)$this->getUpdateUrl()['updateVersion'] > (int)MOLLIE_VERSION))) {
 			$this->response->redirect($this->url->link('extension/mollie/payment/mollie_' . static::MODULE_NAME, $this->token));
             return;
 		}
@@ -1485,6 +1488,7 @@ class Mollie extends \Opencart\System\Engine\Controller {
                         $log->write("Refund has been processed for order_id - $order_id, transaction_id - " . $molliePaymentDetails['transaction_id'] . ". Refund id is $refundObject->id.");
                         $json['success'] = $this->language->get('text_refund_success');
                         $json['order_status_id'] = $this->config->get($moduleCode . "_ideal_refund_status_id");
+                        $json['notify_customer'] = ($this->config->get($moduleCode . "_ideal_refund_status_notify")) ? true : false;
                         $json['comment'] = $this->language->get('text_refund_success');
                         $json['order_id'] = $order_id;
 
@@ -1669,6 +1673,7 @@ class Mollie extends \Opencart\System\Engine\Controller {
                 $log->write('Partial refund of amount ' . $amount . ' has been processed for order_id - ' . $order_id . ' and transaction_id - ' . $molliePaymentDetails['transaction_id'] . '. Refund id is ' . $refundObject->id);
                 $json['success'] = $this->language->get('text_refund_success');
                 $json['order_status_id'] = $this->config->get($moduleCode . "_ideal_partial_refund_status_id");
+                $json['notify_customer'] = ($this->config->get($moduleCode . "_ideal_partial_refund_status_notify")) ? true : false;
                 $json['comment'] = sprintf($this->language->get('text_partial_refund_success'), $amount);
                 $json['order_id'] = $order_id;
 

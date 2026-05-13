@@ -106,7 +106,7 @@ if (!confirm('{{ text_confirm_refund }}')) {
             url: 'index.php?route=sale/order|call&user_token={{ user_token }}&action=sale/order|addHistory&order_id=' + $('#input-order-id').val(),
             type: 'post',
             dataType: 'json',
-            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=1&override=0&append=1&comment=' + encodeURIComponent(json['comment']) + '&order_id=' + encodeURIComponent(json['order_id']),
+            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=' + encodeURIComponent(json['notify_customer']) + '&override=0&append=1&comment=' + encodeURIComponent(json['comment']) + '&order_id=' + encodeURIComponent(json['order_id']),
             success: function(json) {
                 if (json['success']) {
                     $('#history').load('index.php?route=sale/order|history&user_token={{ user_token }}&order_id=' + $('#input-order-id').val());
@@ -189,7 +189,7 @@ $('#button-partial-refund').on('click', function() {
             url: 'index.php?route=sale/order|call&user_token={{ user_token }}&action=sale/order|addHistory&order_id=' + $('#input-order-id').val(),
             type: 'post',
             dataType: 'json',
-            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=1&override=0&append=1&comment=' + encodeURIComponent(json['comment']) + '&order_id=' + encodeURIComponent(json['order_id']),
+            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=' + encodeURIComponent(json['notify_customer']) + '&override=0&append=1&comment=' + encodeURIComponent(json['comment']) + '&order_id=' + encodeURIComponent(json['order_id']),
             success: function(json) {
                 if (json['success']) {
                     $('#history').load('index.php?route=sale/order|history&user_token={{ user_token }}&order_id=' + $('#input-order-id').val());
