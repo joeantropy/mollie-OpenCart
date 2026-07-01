@@ -2,6 +2,11 @@
 
 # Changelog #
 
+#### Changes in release 14.0.1
+  + Fixed "Shopping cart not cleared after PayByBank" issue
+  + Fixed "getMethods is not taking into accounts coupons" in OpenCart 4 version
+  + Bugfixes
+
 #### Changes in release 14.0.0
   + New payment methods (Bizum, MB Way, Multibanco, Pay By Bank and Swish)
   + Notify customer option for order status update
