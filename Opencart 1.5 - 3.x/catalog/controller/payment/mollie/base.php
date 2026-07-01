@@ -440,7 +440,7 @@ class ControllerPaymentMollieBase extends Controller
             );
             
             // Manual capture
-            if (in_array($method, ["creditcard", "klarna", "klarnapaylater", "klarnapaynow", "klarnasliceit", "billie", "riverty", "paypal"])) {
+            if (in_array($method, ["creditcard", "klarna", "klarnapaylater", "klarnapaynow", "klarnasliceit", "billie", "riverty"])) { // "paypal" is currently in beta phase. Will be added later.
                 $data['captureMode'] = "manual";
             }
 
@@ -1382,7 +1382,7 @@ class ControllerPaymentMollieBase extends Controller
             // Create subscriptions if any
             $this->createSubscription($order, $paymentDetails);
 
-            if (($paymentDetails->isPaid() || $paymentDetails->isAuthorized())) {
+            if ($paymentDetails->isPaid() || $paymentDetails->isAuthorized() || $paymentDetails->isPending()) {
                 $success_redirect = true;
             }
         }

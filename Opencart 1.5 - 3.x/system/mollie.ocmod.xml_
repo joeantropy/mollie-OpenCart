@@ -367,7 +367,7 @@ $('.alert').remove();
             url: order_history_url,
             type: 'post',
             dataType: 'json',
-            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=1&override=0&append=1&comment=' + encodeURIComponent(json['comment']),
+            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=' + encodeURIComponent(json['notify_customer']) + '&override=0&append=1&comment=' + encodeURIComponent(json['comment']),
             success: function(json) {
             if (json['success']) {
                 $('#history').load('index.php?route=sale/order/history&token=<?php echo $token; ?>&order_id=<?php echo $order_id; ?>');
@@ -460,7 +460,7 @@ $('.alert').remove();
             url: order_history_url,
             type: 'post',
             dataType: 'json',
-            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=1&override=0&append=1&comment=' + encodeURIComponent(json['comment']),
+            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=' + encodeURIComponent(json['notify_customer']) + '&override=0&append=1&comment=' + encodeURIComponent(json['comment']),
             success: function(json) {
                 if (json['success']) {
                     $('#history').load('index.php?route=sale/order/history&token=<?php echo $token; ?>&order_id=<?php echo $order_id; ?>');
@@ -705,7 +705,7 @@ if (!confirm('{{ text_confirm_refund }}')) {
             url: '{{ catalog }}index.php?route=api/order/history&api_token={{ api_token }}&store_id={{ store_id }}&order_id={{ order_id }}',
             type: 'post',
             dataType: 'json',
-            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=1&override=0&append=1&comment=' + encodeURIComponent(json['comment']),
+            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=' + encodeURIComponent(json['notify_customer']) + '&override=0&append=1&comment=' + encodeURIComponent(json['comment']),
             success: function(json) {
                 if (json['success']) {
                     $('#history').load('index.php?route=sale/order/history&user_token={{ user_token }}&order_id={{ order_id }}');
@@ -788,7 +788,7 @@ $('#button-partial-refund').on('click', function() {
             url: '{{ catalog }}index.php?route=api/order/history&api_token={{ api_token }}&store_id={{ store_id }}&order_id={{ order_id }}',
             type: 'post',
             dataType: 'json',
-            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=1&override=0&append=1&comment=' + encodeURIComponent(json['comment']),
+            data: 'order_status_id=' + encodeURIComponent(json['order_status_id']) + '&notify=' + encodeURIComponent(json['notify_customer']) + '&override=0&append=1&comment=' + encodeURIComponent(json['comment']),
             success: function(json) {
                 if (json['success']) {
                     $('#history').load('index.php?route=sale/order/history&user_token={{ user_token }}&order_id={{ order_id }}');

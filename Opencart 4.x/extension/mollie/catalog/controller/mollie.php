@@ -505,7 +505,7 @@ class Mollie extends \Opencart\System\Engine\Controller {
             ];
 
             // Manual capture
-            if (in_array($method, ["creditcard", "klarna", "klarnapaylater", "klarnapaynow", "klarnasliceit", "billie", "riverty", "paypal"])) {
+            if (in_array($method, ["creditcard", "klarna", "klarnapaylater", "klarnapaynow", "klarnasliceit", "billie", "riverty"])) { // "paypal" is currently in beta phase. Will be added later.
                 $data['captureMode'] = "manual";
             }
 
@@ -1501,7 +1501,7 @@ class Mollie extends \Opencart\System\Engine\Controller {
             // Create subscriptions if any
             $this->createSubscription($order, $paymentDetails);
 
-            if (($paymentDetails->isPaid() || $paymentDetails->isAuthorized())) {
+            if ($paymentDetails->isPaid() || $paymentDetails->isAuthorized() || $paymentDetails->isPending()) {
                 $success_redirect = true;
             }
         }

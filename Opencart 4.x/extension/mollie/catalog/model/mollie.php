@@ -142,7 +142,19 @@ class Mollie extends \Opencart\System\Engine\Model {
         $currency = $this->getCurrency();
         $moduleCode = $this->mollieHelper->getModuleCode();
 
-        $total = $this->cart->getTotal();
+        if (version_compare(VERSION, '4.1.0.0', '<')) {
+            $total = $this->cart->getTotal();
+        } else {
+            // Order Totals
+            $totals = [];
+            $taxes = $this->cart->getTaxes();
+            $total = 0;
+
+            // Cart
+            $this->load->model('checkout/cart');
+
+            ($this->model_checkout_cart->getTotals)($totals, $taxes, $total);
+        }
 
         // Check total for minimum and maximum amount
         $standardTotal = (float)$this->currency->convert($total, $this->config->get("config_currency"), 'EUR');
